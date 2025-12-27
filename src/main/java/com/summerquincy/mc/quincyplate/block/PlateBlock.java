@@ -1,6 +1,7 @@
 package com.summerquincy.mc.quincyplate.block;
 
 import com.summerquincy.mc.quincyplate.blockentity.PlateBlockEntity;
+import com.summerquincy.mc.quincyplate.blockentity.renderer.PlateBlockEntityRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
@@ -21,11 +22,19 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
+import static java.lang.Math.atan2;
+import static java.lang.Math.sin;
+import static java.lang.Math.cos;
+import static java.lang.Math.pow;
+import static java.lang.Math.sqrt;
+
+
 @SuppressWarnings({"NullableProblems", "deprecation"})
 public class PlateBlock extends BaseEntityBlock {
     public static final VoxelShape SHAPE =
             Shapes.or(Block.box(2, 0, 2, 14, 0.5, 14));
-    private static final double MAX_PLACE_DISTANCE = 0.17;//距离中心点超过这个值就禁止放置
+    private static final double MAX_PLACE_DISTANCE = 0.25 - PlateBlockEntityRenderer.ITEM_SIZE / 2;//距离中心点超过这个值就禁止放置
+    private static final double IGNORE_THRESHOLD = 0.38;//距离中心点超过这个值就直接不处理
 
     protected PlateBlock(Properties p) {
         super(p);
@@ -77,20 +86,25 @@ public class PlateBlock extends BaseEntityBlock {
                 double rotZ = user.getLookAngle().z;
                 if (item.isEmpty()) {//空手，把物品取出来
                     if (plate.retriveItem(user, x, z)) {
-                        return InteractionResult.sidedSuccess(level.isClientSide());
-                        //使用sidedSuccess避免重复处理
-                        //CONSUME表示操作成功，但只告诉服务端已经处理掉，客户端不再重复执行动作。
+                        return InteractionResult.SUCCESS;
                     }
                 } else {//手里拿着物品，放进去
-                    if (Math.abs(x - 0.5) > MAX_PLACE_DISTANCE || Math.abs(z - 0.5) > MAX_PLACE_DISTANCE)
-                        //点到盘子外面
+                    double hitDistance = sqrt(pow(x - 0.5, 2) + pow(z - 0.5, 2));
+                    if (hitDistance > IGNORE_THRESHOLD)
                         return InteractionResult.PASS;
+                    if (hitDistance > MAX_PLACE_DISTANCE)
+                    //点到盘子有效判定区外面，自动修正为距离中心点最大距离处的同方向点
+                    {
+                        double theta = atan2(z - 0.5, x - 0.5);
+                        x = 0.5 + MAX_PLACE_DISTANCE * cos(theta);
+                        z = 0.5 + MAX_PLACE_DISTANCE * sin(theta);
+                    }
                     ItemStack toPut = item.copyWithCount(1);
-                    if (plate.addFood(user, toPut, x, z, Math.atan2(rotX, rotZ))) {
+                    if (plate.addFood(user, toPut, x, z, atan2(rotX, rotZ))) {
                         if (!user.isCreative()) {
                             item.shrink(1);
                         }
-                        return InteractionResult.sidedSuccess(level.isClientSide());
+                        return InteractionResult.SUCCESS;
                     }
                 }
                 return InteractionResult.PASS;

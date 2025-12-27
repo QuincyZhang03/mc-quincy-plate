@@ -23,20 +23,15 @@ import java.util.List;
 public class PlateBlockEntity extends BlockEntity {
 
     private final PlateContent content = new PlateContent();
-    public static final double LAYOUT_SPACING_THRESHOLD = 0.58 * Math.sqrt(2) * PlateBlockEntityRenderer.ITEM_SIZE;
-    //这是两个物品要不重叠的最小距离门槛
-    public static final double SELECTION_TOLERANCE = 0.35 * Math.sqrt(2) * PlateBlockEntityRenderer.ITEM_SIZE;
-    //这是选中物品的最大容差，误差超超过这个值就判定为没选中任何物品
+    public static final double SELECTION_TOLERANCE = 0.32 * Math.sqrt(2) * PlateBlockEntityRenderer.ITEM_SIZE;
+    //这是选中物品的最大容差，误差超过这个值就判定为没选中任何物品
 
 
     public boolean addFood(Player user, ItemStack food, double x, double z, double rotation) {
         //尝试放入食物，成功返回true，失败返回false
-        if (selectItem(x, z, PlateBlockEntity.LAYOUT_SPACING_THRESHOLD) != null) {//已经有东西了，放不下
-            return false;
-        }
-        //参数1为null则所有人都能听到
         user.level().playSound(null, user.getX(), user.getY(), user.getZ(), SoundEvents.ITEM_FRAME_ADD_ITEM, SoundSource.NEUTRAL,
                 0.4f, 1.0f + user.getRandom().nextIntBetweenInclusive(-2, 2) * 0.1f);
+        //参数1为null则所有人都能听到
         content.add(food, x, z, rotation);
         sync();
         return true;
@@ -66,19 +61,16 @@ public class PlateBlockEntity extends BlockEntity {
     }
 
     public PlateContentItem selectItem(double x, double z, double max_distance) {
-        //返回(x,z)为中心max_distance半径范围内距离最近的一项，未找到返回null
-        double minD = Double.MAX_VALUE;
-        PlateContentItem closestItem = null;
-        for (PlateContentItem contentItem : content.getFoodList()) {
+        //返回(x,z)为中心max_distance半径范围内y值最大的一项（索引最大的一项），未找到返回null
+        List<PlateContentItem> foodList = content.getFoodList();
+        for (int i = foodList.size() - 1; i >= 0; i--) {
+            PlateContentItem contentItem = foodList.get(i);
             double d = getDistance(x, z, contentItem.getPosX(), contentItem.getPosZ());
             if (d < max_distance) {
-                if (closestItem == null || d < minD) {
-                    closestItem = contentItem;
-                    minD = d;
-                }
+                return contentItem;
             }
         }
-        return closestItem;
+        return null;
     }
 
     private double getDistance(double x1, double z1, double x2, double z2) {

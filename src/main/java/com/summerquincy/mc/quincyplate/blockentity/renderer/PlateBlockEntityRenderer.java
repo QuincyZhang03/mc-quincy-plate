@@ -15,11 +15,12 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
+
 import java.util.List;
 
 @SuppressWarnings("NullableProblems")
 public class PlateBlockEntityRenderer implements BlockEntityRenderer<PlateBlockEntity> {
-    public static final float ITEM_SIZE = 0.18f;
+    public static final float ITEM_SIZE = 0.27f;
 
     @SuppressWarnings("unused")
     public PlateBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
@@ -30,9 +31,10 @@ public class PlateBlockEntityRenderer implements BlockEntityRenderer<PlateBlockE
         ItemRenderer renderer = Minecraft.getInstance().getItemRenderer();
         List<PlateContentItem> foodList = blockEntity.getContent().getFoodList();
 
+        int y = 0;
         for (var item : foodList) {
             poseStack.pushPose();
-            poseStack.translate(item.getPosX(), 0.028, item.getPosZ());
+            poseStack.translate(item.getPosX(), 0.028 + 0.001 * y++, item.getPosZ());
             poseStack.scale(ITEM_SIZE, ITEM_SIZE, ITEM_SIZE);
             poseStack.mulPose(Axis.YP.rotation((float) item.getRotation()));
             //先绕Y轴旋转，这时元素自身的X轴也跟着旋转了，再绕自身X轴旋转就可以躺在盘子上了
