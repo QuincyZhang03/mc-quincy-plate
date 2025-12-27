@@ -19,6 +19,7 @@ public class ModBlockLootTableGen extends BlockLootSubProvider {
         dropSelf(ModBlocks.WHITE_PLATE.get());
     }
 
+    @SuppressWarnings("NullableProblems")
     @Override
     protected Iterable<Block> getKnownBlocks() {
         return List.of(ModBlocks.WHITE_PLATE.get());

@@ -21,6 +21,7 @@ import java.util.List;
 public class PlateBlockEntityRenderer implements BlockEntityRenderer<PlateBlockEntity> {
     public static final float ITEM_SIZE = 0.18f;
 
+    @SuppressWarnings("unused")
     public PlateBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
     }
 

@@ -4,9 +4,9 @@ import net.minecraft.world.item.ItemStack;
 
 public class PlateContentItem {
     private ItemStack item;
-    private double posX;
-    private double posZ;
-    private double rotation;
+    private final double posX;
+    private final double posZ;
+    private final double rotation;
 
     public ItemStack getItem() {
         return item;
@@ -20,24 +20,12 @@ public class PlateContentItem {
         return posX;
     }
 
-    public void setPosX(double posX) {
-        this.posX = posX;
-    }
-
     public double getPosZ() {
         return posZ;
     }
 
-    public void setPosZ(double posZ) {
-        this.posZ = posZ;
-    }
-
     public double getRotation() {
         return rotation;
-    }
-
-    public void setRotation(double rotation) {
-        this.rotation = rotation;
     }
 
     public PlateContentItem(ItemStack item, double posX, double posZ, double rotation) {

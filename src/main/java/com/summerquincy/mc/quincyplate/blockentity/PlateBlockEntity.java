@@ -4,7 +4,6 @@ import com.summerquincy.mc.quincyplate.blockentity.data.PlateContentItem;
 import com.summerquincy.mc.quincyplate.blockentity.renderer.PlateBlockEntityRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
