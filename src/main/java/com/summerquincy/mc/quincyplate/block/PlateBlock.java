@@ -7,6 +7,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -18,10 +19,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
-
 import static java.lang.Math.atan2;
 import static java.lang.Math.sin;
 import static java.lang.Math.cos;
@@ -32,7 +31,7 @@ import static java.lang.Math.sqrt;
 @SuppressWarnings({"NullableProblems", "deprecation"})
 public class PlateBlock extends BaseEntityBlock {
     public static final VoxelShape SHAPE =
-            Shapes.or(Block.box(2, 0, 2, 14, 0.5, 14));
+            Block.box(2, 0, 2, 14, 0.5, 14);
     private static final double MAX_PLACE_DISTANCE = 0.25 - PlateBlockEntityRenderer.ITEM_SIZE / 2;//距离中心点超过这个值就禁止放置
     private static final double IGNORE_THRESHOLD = 0.38;//距离中心点超过这个值就直接不处理
 
@@ -89,9 +88,11 @@ public class PlateBlock extends BaseEntityBlock {
                         return InteractionResult.SUCCESS;
                     }
                 } else {//手里拿着物品，放进去
+                    if (item.getItem() instanceof BlockItem && !item.isEdible()) //不让放不能吃的方块
+                        return InteractionResult.CONSUME;
                     double hitDistance = sqrt(pow(x - 0.5, 2) + pow(z - 0.5, 2));
                     if (hitDistance > IGNORE_THRESHOLD)
-                        return InteractionResult.PASS;
+                        return InteractionResult.CONSUME;
                     if (hitDistance > MAX_PLACE_DISTANCE)
                     //点到盘子有效判定区外面，自动修正为距离中心点最大距离处的同方向点
                     {
@@ -110,6 +111,6 @@ public class PlateBlock extends BaseEntityBlock {
                 return InteractionResult.PASS;
             }
         }
-        return InteractionResult.PASS;
+        return InteractionResult.CONSUME;
     }
 }

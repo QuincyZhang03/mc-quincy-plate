@@ -21,7 +21,6 @@ public class ModBlocks {
                     .strength(0.5f)
                     .sound(SoundType.GLASS)
                     .mapColor(MapColor.TERRACOTTA_WHITE)
-                    .noOcclusion()
             ));
 
     private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> supplier) {
