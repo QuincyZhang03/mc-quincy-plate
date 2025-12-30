@@ -1,46 +1,32 @@
 package com.summerquincy.mc.quincyplate.block;
 
-import com.summerquincy.mc.quincyplate.blockentity.RoundPlateBlockEntity;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.state.BlockState;
-import org.jetbrains.annotations.Nullable;
+import com.summerquincy.mc.quincyplate.blockentity.renderer.PlateBlockEntityRenderer;
+import com.summerquincy.mc.quincyplate.util.DistanceHelper;
 
 import static java.lang.Math.sin;
 import static java.lang.Math.cos;
-import static java.lang.Math.sqrt;
 
 public class RoundPlateBlock extends PlateBlock {
-    private static double MAX_PLACE_DISTANCE;//距离中心点超过这个值就禁止放置
-    private static double IGNORE_THRESHOLD;//距离中心点超过这个值就直接不处理
+    private static final double PLACING_RADIUS = (12 - 8) / 16.0 - PlateBlockEntityRenderer.ITEM_SIZE / 2 - 0.01;
+    //-0.01是为了防止物品贴图边界超出边框
+    private static final double INTERACT_RADIUS = (14 - 8) / 16.0;//距离中心点超过这个值就直接不处理
 
-
-    protected RoundPlateBlock(Properties p, double width, double height,
-                              double max_place_distance, double ignore_threshold) {
+    protected RoundPlateBlock(Properties p, double width, double height) {
         super(p, width, height);
-        MAX_PLACE_DISTANCE = max_place_distance;
-        IGNORE_THRESHOLD = ignore_threshold;
     }
 
     @Override
     protected boolean shouldIgnore(double x, double z) {
-        return (x - 0.5) * (x - 0.5) + (z - 0.5) * (z - 0.5) > IGNORE_THRESHOLD * IGNORE_THRESHOLD;
+        return !DistanceHelper.isDistanceWithinScope(x, z, 0.5, 0.5, INTERACT_RADIUS);
     }
 
     @Override
     protected PlatePos getModifiedPos(double x, double z) {
-        double hitDistance = sqrt((x - 0.5) * (x - 0.5) + (z - 0.5) * (z - 0.5));
-        if (hitDistance > MAX_PLACE_DISTANCE) {
+        if (!DistanceHelper.isDistanceWithinScope(x, z, 0.5, 0.5, PLACING_RADIUS)) {
             double theta = Math.atan2(z - 0.5, x - 0.5);
-            x = 0.5 + MAX_PLACE_DISTANCE * cos(theta);
-            z = 0.5 + MAX_PLACE_DISTANCE * sin(theta);
+            x = 0.5 + PLACING_RADIUS * cos(theta);
+            z = 0.5 + PLACING_RADIUS * sin(theta);
         }
         return new PlatePos(x, z);
-    }
-
-    @SuppressWarnings("NullableProblems")
-    @Override
-    public @Nullable BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-        return new RoundPlateBlockEntity(pPos, pState);
     }
 }

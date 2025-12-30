@@ -14,7 +14,8 @@ public class ModBlockStateGen extends BlockStateProvider {
 
     @Override
     protected void registerStatesAndModels() {
-        simpleBlock(ModBlocks.WHITE_PLATE.get(), new ModelFile.UncheckedModelFile(modLoc("block/white_plate")));
+        simpleBlockWithItem(ModBlocks.WHITE_PLATE.get(), new ModelFile.UncheckedModelFile(modLoc("block/white_plate")));
+        simpleBlockWithItem(ModBlocks.SQUARE_WHITE_PLATE.get(), new ModelFile.UncheckedModelFile(modLoc("block/square_white_plate")));
         //UncheckedModelFile在生成时不会检查是否真的存在，适合用于数据生成。
     }
 }

@@ -1,5 +1,9 @@
 {
   "item.quincyplate.white_plate": "White Plate",
+  "item.quincyplate.square_white_plate": "Square White Plate",
+  "item.quincyplate.fork": "Fork",
   "block.quincyplate.white_plate": "White Plate",
-  "tooltip.quincyplate.and_so_on": "(Hold Shift to view %d more items...)"
+  "block.quincyplate.square_white_plate": "Square White Plate",
+  "tooltip.quincyplate.and_so_on": "(Hold Shift to view %d more items...)",
+  "creativetab.quincyplate": "Quincy's Plate"
 }

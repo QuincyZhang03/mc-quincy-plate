@@ -2,7 +2,8 @@ package com.summerquincy.mc.quincyplate.blockentity;
 
 import com.summerquincy.mc.quincyplate.blockentity.data.PlateContent;
 import com.summerquincy.mc.quincyplate.blockentity.data.PlateContentItem;
-import com.summerquincy.mc.quincyplate.blockentity.renderer.RoundPlateBlockEntityRenderer;
+import com.summerquincy.mc.quincyplate.blockentity.renderer.PlateBlockEntityRenderer;
+import com.summerquincy.mc.quincyplate.util.DistanceHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
@@ -15,16 +16,19 @@ import net.minecraft.world.Containers;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.event.ForgeEventFactory;
+
 import javax.annotation.Nullable;
 import java.util.List;
 
 @SuppressWarnings("NullableProblems")
-public abstract class PlateBlockEntity extends BlockEntity {
+public class PlateBlockEntity extends BlockEntity {
 
     private final PlateContent content = new PlateContent();
-    protected static final double SELECTION_TOLERANCE = 0.32 * Math.sqrt(2) * RoundPlateBlockEntityRenderer.ITEM_SIZE;
+    public static final double SELECTION_TOLERANCE = 0.32 * Math.sqrt(2) * PlateBlockEntityRenderer.ITEM_SIZE;
     //这是选中物品的最大容差，误差超过这个值就判定为没选中任何物品
 
 
@@ -53,6 +57,18 @@ public abstract class PlateBlockEntity extends BlockEntity {
         return true;
     }
 
+    public boolean eatItem(Player user, Level level, double x, double z) {
+        PlateContentItem selectedItem = selectItem(x, z, SELECTION_TOLERANCE);
+        if (selectedItem == null || !selectedItem.getItem().isEdible()) return false;
+        if (!user.canEat(false)) return false;
+        content.remove(selectedItem);
+        ForgeEventFactory.onItemUseFinish(user, selectedItem.getItem(),
+                selectedItem.getItem().getUseDuration(), ItemStack.EMPTY);//兼容生活调味料等mod
+        user.eat(level, selectedItem.getItem());
+        sync();
+        return true;
+    }
+
     private void sync() {
         setChanged();
         if (level != null && !level.isClientSide) {
@@ -66,16 +82,11 @@ public abstract class PlateBlockEntity extends BlockEntity {
         List<PlateContentItem> foodList = content.getFoodList();
         for (int i = foodList.size() - 1; i >= 0; i--) {
             PlateContentItem contentItem = foodList.get(i);
-            double d = getDistance(x, z, contentItem.getPosX(), contentItem.getPosZ());
-            if (d < max_distance) {
+            if (DistanceHelper.isDistanceWithinScope(x, z, contentItem.getPosX(), contentItem.getPosZ(), max_distance)) {
                 return contentItem;
             }
         }
         return null;
-    }
-
-    private double getDistance(double x1, double z1, double x2, double z2) {
-        return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(z1 - z2, 2));
     }
 
     public void dropEverything() {
@@ -100,11 +111,9 @@ public abstract class PlateBlockEntity extends BlockEntity {
     }
 
     public PlateBlockEntity(BlockPos pPos, BlockState pBlockState) {
-        super(ModBlockEntities.ROUND_PLATE_BLOCK_ENTITY.get(), pPos, pBlockState);
+        super(ModBlockEntities.PLATE_BLOCK_ENTITY.get(), pPos, pBlockState);
 //        //这里把参数1删去了，为了匹配参数表，方便ModBlockEntities里可以使用PlateBlockEntitiy::new
-
     }
-
 
     @Override
     public @Nullable Packet<ClientGamePacketListener> getUpdatePacket() {

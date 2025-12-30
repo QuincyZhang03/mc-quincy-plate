@@ -16,11 +16,12 @@ public class ModBlockLootTableGen extends BlockLootSubProvider {
     @Override
     protected void generate() {
         dropSelf(ModBlocks.WHITE_PLATE.get());
+        dropSelf(ModBlocks.SQUARE_WHITE_PLATE.get());
     }
 
     @SuppressWarnings("NullableProblems")
     @Override
     protected Iterable<Block> getKnownBlocks() {
-        return List.of(ModBlocks.WHITE_PLATE.get());
+        return List.of(ModBlocks.WHITE_PLATE.get(),ModBlocks.SQUARE_WHITE_PLATE.get());
     }
 }

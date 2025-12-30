@@ -1,5 +1,9 @@
 {
   "item.quincyplate.white_plate": "白色盘子",
+  "item.quincyplate.square_white_plate": "方形白色盘子",
+  "item.quincyplate.fork": "餐叉",
   "block.quincyplate.white_plate": "白色盘子",
-  "tooltip.quincyplate.and_so_on": "(按住Shift查看剩余 %d 项...)"
+  "block.quincyplate.square_white_plate": "方形白色盘子",
+  "tooltip.quincyplate.and_so_on": "(按住Shift查看剩余 %d 项...)",
+  "creativetab.quincyplate": "Quincy的盘子"
 }

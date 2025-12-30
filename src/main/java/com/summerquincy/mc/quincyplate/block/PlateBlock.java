@@ -1,6 +1,7 @@
 package com.summerquincy.mc.quincyplate.block;
 
 import com.summerquincy.mc.quincyplate.blockentity.PlateBlockEntity;
+import com.summerquincy.mc.quincyplate.item.ModItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
@@ -19,6 +20,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.Nullable;
 
 import static java.lang.Math.atan2;
 
@@ -30,6 +32,7 @@ public abstract class PlateBlock extends BaseEntityBlock {
     protected static class PlatePos {
         double x;
         double z;
+
         public PlatePos(double x, double z) {
             this.x = x;
             this.z = z;
@@ -52,6 +55,10 @@ public abstract class PlateBlock extends BaseEntityBlock {
         return RenderShape.MODEL;
     }
 
+    @Override
+    public @Nullable BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
+        return new PlateBlockEntity(pPos, pState);
+    }
 
     // 这个onRemove方法的名字有一定的误导性，在早期版本时只有方块被破坏时才被调用，
     // 现在只要blockstate发生变化了就会被调用，因此需要判断是否真的被破坏了。
@@ -90,13 +97,18 @@ public abstract class PlateBlock extends BaseEntityBlock {
                 double rotX = user.getLookAngle().x;
                 double rotZ = user.getLookAngle().z;
                 if (item.isEmpty()) {//空手，把物品取出来
-                    if (plate.retriveItem(user, x, z)) {
+                    if (plate.retriveItem(user, x, z)) { //尝试取回食物
                         return InteractionResult.SUCCESS;
                     }
                 } else {//手里拿着物品，放进去
+                    if (item.getItem() == ModItems.FORK.get()) {
+                        if (plate.eatItem(user, level, x, z)) {
+                            return InteractionResult.SUCCESS;
+                        }
+                        return InteractionResult.CONSUME;
+                    }
                     if (item.getItem() instanceof BlockItem && !item.isEdible()) //不让放不能吃的方块
                         return InteractionResult.CONSUME;
-
                     if (shouldIgnore(x, z))
                         return InteractionResult.CONSUME;
                     PlatePos modifiedPos = getModifiedPos(x, z);

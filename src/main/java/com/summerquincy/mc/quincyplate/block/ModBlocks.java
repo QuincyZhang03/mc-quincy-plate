@@ -1,7 +1,6 @@
 package com.summerquincy.mc.quincyplate.block;
 
 import com.summerquincy.mc.quincyplate.QuincyPlateMod;
-import com.summerquincy.mc.quincyplate.blockentity.renderer.RoundPlateBlockEntityRenderer;
 import com.summerquincy.mc.quincyplate.item.ModItems;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -24,9 +23,15 @@ public class ModBlocks {
                             .strength(0.5f)
                             .sound(SoundType.GLASS)
                             .mapColor(MapColor.TERRACOTTA_WHITE),
-                            12, 0.5,
-                            0.25 - RoundPlateBlockEntityRenderer.ITEM_SIZE / 2,
-                            0.38
+                            12, 0.5
+                    ));
+    public static final RegistryObject<Block> SQUARE_WHITE_PLATE =
+            registerBlock("square_white_plate",
+                    () -> new SquarePlateBlock(BlockBehaviour.Properties.of()
+                            .strength(0.5f)
+                            .sound(SoundType.GLASS)
+                            .mapColor(MapColor.TERRACOTTA_WHITE),
+                            12, 0.5
                     ));
 
     private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> supplier) {

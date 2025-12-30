@@ -22,6 +22,7 @@ public class GeneralDataGen {
 
         generator.addProvider(e.includeClient(), new ModBlockStateGen(output, fileHelper));
         generator.addProvider(e.includeServer(), new ModRecipeGen(output));
+        generator.addProvider(e.includeClient(),new ModItemModelGen(output,fileHelper));
         generator.addProvider(e.includeServer(), new LootTableProvider(output, Set.of(),
                 List.of(new LootTableProvider.SubProviderEntry(
                         () -> new ModBlockLootTableGen(Set.of(), FeatureFlags.REGISTRY.allFlags()),

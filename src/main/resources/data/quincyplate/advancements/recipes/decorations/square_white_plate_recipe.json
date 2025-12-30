@@ -1,6 +1,18 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
+    "has_quartz": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:quartz"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
     "has_quartz_block": {
       "conditions": {
         "items": [
@@ -15,7 +27,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "quincyplate:white_plate_recipe"
+        "recipe": "quincyplate:square_white_plate_recipe"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -23,12 +35,13 @@
   "requirements": [
     [
       "has_quartz_block",
+      "has_quartz",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "quincyplate:white_plate_recipe"
+      "quincyplate:square_white_plate_recipe"
     ]
   },
   "sends_telemetry_event": false

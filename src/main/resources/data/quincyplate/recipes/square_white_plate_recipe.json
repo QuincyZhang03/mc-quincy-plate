@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "item": "minecraft:quartz_block"
+    },
+    "X": {
+      "item": "minecraft:quartz"
+    }
+  },
+  "pattern": [
+    "# #",
+    "X#X"
+  ],
+  "result": {
+    "count": 3,
+    "item": "quincyplate:square_white_plate"
+  },
+  "show_notification": true
+}

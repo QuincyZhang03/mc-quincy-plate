@@ -2,6 +2,7 @@ package com.summerquincy.mc.quincyplate;
 
 import com.summerquincy.mc.quincyplate.block.ModBlocks;
 import com.summerquincy.mc.quincyplate.blockentity.ModBlockEntities;
+import com.summerquincy.mc.quincyplate.creativetab.ModCreativeTabs;
 import com.summerquincy.mc.quincyplate.item.ModItems;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -29,6 +30,7 @@ public class QuincyPlateMod
         ModItems.register(modEventBus);
         ModBlocks.register(modEventBus);
         ModBlockEntities.register(modEventBus);
+        ModCreativeTabs.register(modEventBus);
 
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
