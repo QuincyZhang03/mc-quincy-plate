@@ -1,7 +1,8 @@
 package com.summerquincy.mc.quincyplate.blockentity;
 
+import com.summerquincy.mc.quincyplate.blockentity.data.PlateContent;
 import com.summerquincy.mc.quincyplate.blockentity.data.PlateContentItem;
-import com.summerquincy.mc.quincyplate.blockentity.renderer.PlateBlockEntityRenderer;
+import com.summerquincy.mc.quincyplate.blockentity.renderer.RoundPlateBlockEntityRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
@@ -20,10 +21,10 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 @SuppressWarnings("NullableProblems")
-public class PlateBlockEntity extends BlockEntity {
+public abstract class PlateBlockEntity extends BlockEntity {
 
     private final PlateContent content = new PlateContent();
-    public static final double SELECTION_TOLERANCE = 0.32 * Math.sqrt(2) * PlateBlockEntityRenderer.ITEM_SIZE;
+    protected static final double SELECTION_TOLERANCE = 0.32 * Math.sqrt(2) * RoundPlateBlockEntityRenderer.ITEM_SIZE;
     //这是选中物品的最大容差，误差超过这个值就判定为没选中任何物品
 
 
@@ -98,10 +99,12 @@ public class PlateBlockEntity extends BlockEntity {
         content.deserializeNBT(tag.getList("inventory", Tag.TAG_COMPOUND));
     }
 
-    public PlateBlockEntity(BlockPos p_155229_, BlockState p_155230_) {
-        super(ModBlockEntities.PLATE_BLOCK_ENTITY.get(), p_155229_, p_155230_);
-        //这里把参数1删去了，为了匹配参数表，方便ModBlockEntities里可以使用PlateBlockEntitiy::new
+    public PlateBlockEntity(BlockPos pPos, BlockState pBlockState) {
+        super(ModBlockEntities.ROUND_PLATE_BLOCK_ENTITY.get(), pPos, pBlockState);
+//        //这里把参数1删去了，为了匹配参数表，方便ModBlockEntities里可以使用PlateBlockEntitiy::new
+
     }
+
 
     @Override
     public @Nullable Packet<ClientGamePacketListener> getUpdatePacket() {

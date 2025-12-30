@@ -1,6 +1,5 @@
-package com.summerquincy.mc.quincyplate.blockentity;
+package com.summerquincy.mc.quincyplate.blockentity.data;
 
-import com.summerquincy.mc.quincyplate.blockentity.data.PlateContentItem;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;

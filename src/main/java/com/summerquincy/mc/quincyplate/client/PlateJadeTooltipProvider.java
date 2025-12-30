@@ -1,7 +1,7 @@
 package com.summerquincy.mc.quincyplate.client;
 
 import com.summerquincy.mc.quincyplate.blockentity.PlateBlockEntity;
-import com.summerquincy.mc.quincyplate.blockentity.PlateContent;
+import com.summerquincy.mc.quincyplate.blockentity.data.PlateContent;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;

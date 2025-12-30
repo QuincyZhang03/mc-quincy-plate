@@ -1,7 +1,6 @@
 package com.summerquincy.mc.quincyplate.block;
 
 import com.summerquincy.mc.quincyplate.blockentity.PlateBlockEntity;
-import com.summerquincy.mc.quincyplate.blockentity.renderer.PlateBlockEntityRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
@@ -20,23 +19,27 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.jetbrains.annotations.Nullable;
+
 import static java.lang.Math.atan2;
-import static java.lang.Math.sin;
-import static java.lang.Math.cos;
-import static java.lang.Math.pow;
-import static java.lang.Math.sqrt;
 
 
 @SuppressWarnings({"NullableProblems", "deprecation"})
-public class PlateBlock extends BaseEntityBlock {
-    public static final VoxelShape SHAPE =
-            Block.box(2, 0, 2, 14, 0.5, 14);
-    private static final double MAX_PLACE_DISTANCE = 0.25 - PlateBlockEntityRenderer.ITEM_SIZE / 2;//距离中心点超过这个值就禁止放置
-    private static final double IGNORE_THRESHOLD = 0.38;//距离中心点超过这个值就直接不处理
+public abstract class PlateBlock extends BaseEntityBlock {
+    public static VoxelShape SHAPE;
 
-    protected PlateBlock(Properties p) {
+    protected static class PlatePos {
+        double x;
+        double z;
+        public PlatePos(double x, double z) {
+            this.x = x;
+            this.z = z;
+        }
+    }
+
+    protected PlateBlock(Properties p, double width, double height) {
+        //width和height是碰撞箱体积
         super(p);
+        SHAPE = Block.box(8 - width / 2, 0, 8 - width / 2, 8 + width / 2, height, 8 + width / 2);
     }
 
     @Override
@@ -49,10 +52,6 @@ public class PlateBlock extends BaseEntityBlock {
         return RenderShape.MODEL;
     }
 
-    @Override
-    public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new PlateBlockEntity(pos, state);
-    }
 
     // 这个onRemove方法的名字有一定的误导性，在早期版本时只有方块被破坏时才被调用，
     // 现在只要blockstate发生变化了就会被调用，因此需要判断是否真的被破坏了。
@@ -67,6 +66,13 @@ public class PlateBlock extends BaseEntityBlock {
         }
         super.onRemove(pState, level, pos, pNewState, isMoving);
     }
+
+    protected abstract boolean shouldIgnore(double x, double z);
+    //是否点在了盘子外面，与盘子具体形状有关
+
+    protected abstract PlatePos getModifiedPos(double x, double z);
+    //将点在了盘子内的有效放置区域外面的x和z修正为距离中心点最大距离处的同方向点
+    //与盘子具体形状有关
 
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player user, InteractionHand hand, BlockHitResult hitResult) {
@@ -90,16 +96,12 @@ public class PlateBlock extends BaseEntityBlock {
                 } else {//手里拿着物品，放进去
                     if (item.getItem() instanceof BlockItem && !item.isEdible()) //不让放不能吃的方块
                         return InteractionResult.CONSUME;
-                    double hitDistance = sqrt(pow(x - 0.5, 2) + pow(z - 0.5, 2));
-                    if (hitDistance > IGNORE_THRESHOLD)
+
+                    if (shouldIgnore(x, z))
                         return InteractionResult.CONSUME;
-                    if (hitDistance > MAX_PLACE_DISTANCE)
-                    //点到盘子有效判定区外面，自动修正为距离中心点最大距离处的同方向点
-                    {
-                        double theta = atan2(z - 0.5, x - 0.5);
-                        x = 0.5 + MAX_PLACE_DISTANCE * cos(theta);
-                        z = 0.5 + MAX_PLACE_DISTANCE * sin(theta);
-                    }
+                    PlatePos modifiedPos = getModifiedPos(x, z);
+                    x = modifiedPos.x;
+                    z = modifiedPos.z;
                     ItemStack toPut = item.copyWithCount(1);
                     if (plate.addFood(user, toPut, x, z, atan2(rotX, rotZ))) {
                         if (!user.isCreative()) {

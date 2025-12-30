@@ -21,14 +21,18 @@ import java.util.List;
 
 @OnlyIn(Dist.CLIENT)
 @SuppressWarnings("NullableProblems")
-public class PlateBlockEntityRenderer implements BlockEntityRenderer<PlateBlockEntity> {
-    public static final float ITEM_SIZE = 0.27f;
-    public static final float BASE_HEIGHT = 0.045f;//最底层的位置
-    public static final float LAYER_HEIGHT = 0.005f;//堆叠每层的高度
-    public static final float THICKNESS = 0.28f;//物品的厚度
+public abstract class PlateBlockEntityRenderer implements BlockEntityRenderer<PlateBlockEntity> {
+    public float item_size;
+    public float base_height;//最底层的位置
+    public float layer_height;//堆叠每层的高度
+    public float thickness;//物品的厚度
 
     @SuppressWarnings("unused")
-    public PlateBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
+    public PlateBlockEntityRenderer(BlockEntityRendererProvider.Context context,float item_size, float base_height, float layer_height, float thickness) {
+        this.item_size = item_size;
+        this.base_height = base_height;
+        this.layer_height = layer_height;
+        this.thickness = thickness;
     }
 
     @Override
@@ -38,8 +42,8 @@ public class PlateBlockEntityRenderer implements BlockEntityRenderer<PlateBlockE
         int y = 0;
         for (var item : foodList) {
             poseStack.pushPose();
-            poseStack.translate(item.getPosX(), BASE_HEIGHT + LAYER_HEIGHT * y++, item.getPosZ());
-            poseStack.scale(ITEM_SIZE, THICKNESS, ITEM_SIZE);
+            poseStack.translate(item.getPosX(), base_height + layer_height * y++, item.getPosZ());
+            poseStack.scale(item_size, thickness, item_size);
             /*
             对物品而言，厚度是y轴，很奇怪
                 ↑ y（厚度）

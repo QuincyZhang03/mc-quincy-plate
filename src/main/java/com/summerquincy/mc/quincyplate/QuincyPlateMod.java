@@ -8,6 +8,8 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 // The value here should match an entry in the META-INF/mods.toml file
 //Mod入口类要用@Mod注解进行标注，参数填mods.toml里的modid。这个类的构造方法里写初始化行为。
@@ -15,6 +17,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 public class QuincyPlateMod
 {
     public static final String MODID = "quincyplate";
+    public static final Logger LOGGER= LogManager.getLogger();
 //    private static final Logger LOGGER = LogUtils.getLogger();
     public QuincyPlateMod(FMLJavaModLoadingContext context)
     {
@@ -29,11 +32,10 @@ public class QuincyPlateMod
 
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
-
     }
 
     private void commonSetup(final FMLCommonSetupEvent event)
     {
-
+        LOGGER.info("Quincy's Plate loaded successfully!");
     }
 }

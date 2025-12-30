@@ -1,6 +1,7 @@
 package com.summerquincy.mc.quincyplate.block;
 
 import com.summerquincy.mc.quincyplate.QuincyPlateMod;
+import com.summerquincy.mc.quincyplate.blockentity.renderer.RoundPlateBlockEntityRenderer;
 import com.summerquincy.mc.quincyplate.item.ModItems;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -12,16 +13,21 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+
 import java.util.function.Supplier;
 
 public class ModBlocks {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, QuincyPlateMod.MODID);
     public static final RegistryObject<Block> WHITE_PLATE =
-            registerBlock("white_plate", () -> new PlateBlock(BlockBehaviour.Properties.of()
-                    .strength(0.5f)
-                    .sound(SoundType.GLASS)
-                    .mapColor(MapColor.TERRACOTTA_WHITE)
-            ));
+            registerBlock("white_plate",
+                    () -> new RoundPlateBlock(BlockBehaviour.Properties.of()
+                            .strength(0.5f)
+                            .sound(SoundType.GLASS)
+                            .mapColor(MapColor.TERRACOTTA_WHITE),
+                            12, 0.5,
+                            0.25 - RoundPlateBlockEntityRenderer.ITEM_SIZE / 2,
+                            0.38
+                    ));
 
     private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> supplier) {
         RegistryObject<T> block = BLOCKS.register(name, supplier);
