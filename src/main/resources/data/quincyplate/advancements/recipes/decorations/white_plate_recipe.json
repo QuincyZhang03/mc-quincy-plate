@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_quartz_block": {
+    "has_quartz": {
       "conditions": {
         "items": [
           {
             "items": [
-              "minecraft:quartz_block"
+              "minecraft:quartz"
             ]
           }
         ]
@@ -22,7 +22,7 @@
   },
   "requirements": [
     [
-      "has_quartz_block",
+      "has_quartz",
       "has_the_recipe"
     ]
   ],
