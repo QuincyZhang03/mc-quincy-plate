@@ -8,31 +8,31 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.function.Supplier;
 
 public class ModBlocks {
-    public static final DeferredRegister<Block> BLOCKS = DeferredRegister.createBlocks(QuincyPlateMod.MODID);
-    public static final RegistryObject<Block> WHITE_PLATE =
+    public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(QuincyPlateMod.MODID);
+    public static final DeferredBlock<Block> WHITE_PLATE =
             registerBlock("white_plate",
                     () -> new RoundPlateBlock(BlockBehaviour.Properties.of()
                             .strength(0.5f)
                             .sound(SoundType.GLASS)
-                            .mapColor(MapColor.TERRACOTTA_WHITE),
-                            12, 0.5
+                            .mapColor(MapColor.TERRACOTTA_WHITE)
                     ));
-    public static final RegistryObject<Block> SQUARE_WHITE_PLATE =
+    public static final DeferredBlock<Block> SQUARE_WHITE_PLATE =
             registerBlock("square_white_plate",
                     () -> new SquarePlateBlock(BlockBehaviour.Properties.of()
                             .strength(0.5f)
                             .sound(SoundType.GLASS)
-                            .mapColor(MapColor.TERRACOTTA_WHITE),
-                            12, 0.5
+                            .mapColor(MapColor.TERRACOTTA_WHITE)
                     ));
 
-    private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> supplier) {
-        RegistryObject<T> block = BLOCKS.register(name, supplier);
+    private static <T extends Block> DeferredBlock<T> registerBlock(String name, Supplier<T> supplier) {
+        DeferredBlock<T> block = BLOCKS.register(name, supplier);
         ModItems.ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties()));
         return block;
     }

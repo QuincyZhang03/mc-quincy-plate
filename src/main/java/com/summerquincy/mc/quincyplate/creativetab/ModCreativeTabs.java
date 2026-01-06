@@ -7,15 +7,16 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.registries.DeferredRegister;
+
+import java.util.function.Supplier;
 
 public class ModCreativeTabs {
     public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS =
             DeferredRegister.create(Registries.CREATIVE_MODE_TAB, QuincyPlateMod.MODID);
     @SuppressWarnings("unused")
-    public static final RegistryObject<CreativeModeTab> QUINCY_PLATE_TAB=
+    public static final Supplier<CreativeModeTab> QUINCY_PLATE_TAB=
             CREATIVE_MODE_TABS.register("quincy_plate_tab",()-> CreativeModeTab.builder()
                     .title(Component.translatable("creativetab."+QuincyPlateMod.MODID))
                     .icon(()->new ItemStack(ModBlocks.WHITE_PLATE.get()))

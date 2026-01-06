@@ -4,7 +4,6 @@ import com.summerquincy.mc.quincyplate.QuincyPlateMod;
 import com.summerquincy.mc.quincyplate.block.ModBlocks;
 import com.summerquincy.mc.quincyplate.item.ModItems;
 import net.minecraft.data.PackOutput;
-import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;

@@ -1,6 +1,9 @@
 package com.summerquincy.mc.quincyplate.block;
 
+import com.mojang.serialization.MapCodec;
 import com.summerquincy.mc.quincyplate.blockentity.renderer.PlateBlockEntityRenderer;
+import net.minecraft.world.level.block.BaseEntityBlock;
+import org.jetbrains.annotations.NotNull;
 
 import static java.lang.Math.abs;
 
@@ -8,9 +11,10 @@ public class SquarePlateBlock extends PlateBlock {
     private static final double PLACING_WIDTH = (8 - 3.5) / 16.0 - PlateBlockEntityRenderer.ITEM_SIZE / 2 - 0.01;
     //-0.005是为了防止物品贴图边缘超出边框
     private static final double INTERACT_WIDTH = (8 - 2) / 16.0;
+    private static final MapCodec<SquarePlateBlock> CODEC = simpleCodec(SquarePlateBlock::new);
 
-    protected SquarePlateBlock(Properties p, double width, double height) {
-        super(p, width, height);
+    protected SquarePlateBlock(Properties p) {
+        super(p, 12, 0.5);
     }
 
     @Override
@@ -25,5 +29,10 @@ public class SquarePlateBlock extends PlateBlock {
         if (abs(z - 0.5) > PLACING_WIDTH)
             z = 0.5 + PLACING_WIDTH * (z > 0.5 ? 1 : -1);
         return new PlatePos(x, z);
+    }
+
+    @Override
+    protected @NotNull MapCodec<? extends BaseEntityBlock> codec() {
+        return CODEC;
     }
 }

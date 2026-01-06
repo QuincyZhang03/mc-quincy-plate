@@ -1,6 +1,7 @@
 package com.summerquincy.mc.quincyplate.datagen;
 
 import com.summerquincy.mc.quincyplate.block.ModBlocks;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.world.flag.FeatureFlagSet;
 import net.minecraft.world.item.Item;
@@ -9,8 +10,9 @@ import java.util.List;
 import java.util.Set;
 
 public class ModBlockLootTableGen extends BlockLootSubProvider {
-    protected ModBlockLootTableGen(Set<Item> exclude, FeatureFlagSet flag) {
-        super(exclude,flag);
+
+    protected ModBlockLootTableGen(Set<Item> explosionResistant, FeatureFlagSet enabledFeatures, HolderLookup.Provider registries) {
+        super(explosionResistant, enabledFeatures, registries);
     }
 
     @Override

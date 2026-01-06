@@ -5,6 +5,7 @@ import com.summerquincy.mc.quincyplate.blockentity.data.PlateContentItem;
 import com.summerquincy.mc.quincyplate.blockentity.renderer.PlateBlockEntityRenderer;
 import com.summerquincy.mc.quincyplate.util.DistanceHelper;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.protocol.Packet;
@@ -19,7 +20,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.event.ForgeEventFactory;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -59,11 +59,10 @@ public class PlateBlockEntity extends BlockEntity {
 
     public boolean eatItem(Player user, Level level, double x, double z) {
         PlateContentItem selectedItem = selectItem(x, z, SELECTION_TOLERANCE);
-        if (selectedItem == null || !selectedItem.getItem().isEdible()) return false;
+        if (selectedItem == null || selectedItem.getItem().getFoodProperties(user) == null) return false;
         if (!user.canEat(false)) return false;
         content.remove(selectedItem);
-        ForgeEventFactory.onItemUseFinish(user, selectedItem.getItem(),
-                selectedItem.getItem().getUseDuration(), ItemStack.EMPTY);//兼容生活调味料等mod
+        selectedItem.getItem().finishUsingItem(level, user);//兼容生活调味料等mod
         user.eat(level, selectedItem.getItem());
         sync();
         return true;
@@ -95,18 +94,19 @@ public class PlateBlockEntity extends BlockEntity {
         for (int i = 0; i < foodList.size(); i++) {
             container.setItem(i, foodList.get(i).getItem());  //复制一个Container出来，方便掉落
         }
-        Containers.dropContents(getLevel(), getBlockPos(), container);
+        if (getLevel() != null)
+            Containers.dropContents(getLevel(), getBlockPos(), container);
     }
 
     @Override
-    protected void saveAdditional(CompoundTag tag) {
+    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         tag.put("inventory", content.serializeNBT());//游戏保存时，把额外数据存进NBT里
-        super.saveAdditional(tag);
+        super.saveAdditional(tag, registries);
     }
 
     @Override
-    public void load(CompoundTag tag) {
-        super.load(tag);
+    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
+        super.loadAdditional(tag, registries);
         content.deserializeNBT(tag.getList("inventory", Tag.TAG_COMPOUND));
     }
 
@@ -121,8 +121,10 @@ public class PlateBlockEntity extends BlockEntity {
     }
 
     @Override
-    public CompoundTag getUpdateTag() {
-        return saveWithoutMetadata();
+    public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+        CompoundTag tag = new CompoundTag();
+        saveAdditional(tag, registries);
+        return tag;
     }
 
     public PlateContent getContent() {

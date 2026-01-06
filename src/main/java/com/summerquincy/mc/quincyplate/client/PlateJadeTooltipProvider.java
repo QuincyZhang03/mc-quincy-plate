@@ -34,7 +34,7 @@ public class PlateJadeTooltipProvider implements IBlockComponentProvider, IServe
                 ItemStack item = contentItem.getItem();
                 boolean merged = false;
                 for (var data : toolTipData) { //有一样的就合并
-                    if (ItemStack.isSameItemSameTags(data, item)) {//不比较数量，只比较物品和数据
+                    if (ItemStack.isSameItemSameComponents(data, item)) {//不比较数量，只比较物品和数据
                         data.grow(1);
                         merged = true;
                         break;

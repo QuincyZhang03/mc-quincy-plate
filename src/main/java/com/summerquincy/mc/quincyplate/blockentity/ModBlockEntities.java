@@ -2,16 +2,17 @@ package com.summerquincy.mc.quincyplate.blockentity;
 
 import com.summerquincy.mc.quincyplate.QuincyPlateMod;
 import com.summerquincy.mc.quincyplate.block.ModBlocks;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.registries.DeferredRegister;
+
+import java.util.function.Supplier;
 
 public class ModBlockEntities {
     public static final DeferredRegister<BlockEntityType<?>> BLOCKENTITIES =
-            DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, QuincyPlateMod.MODID);
-    public static final RegistryObject<BlockEntityType<PlateBlockEntity>> PLATE_BLOCK_ENTITY =
+            DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, QuincyPlateMod.MODID);
+    public static final Supplier<BlockEntityType<PlateBlockEntity>> PLATE_BLOCK_ENTITY =
             BLOCKENTITIES.register("plate_be", () ->
                     BlockEntityType.Builder.of(PlateBlockEntity::new,
                             ModBlocks.WHITE_PLATE.get(),

@@ -6,6 +6,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
@@ -25,7 +26,7 @@ import org.jetbrains.annotations.Nullable;
 import static java.lang.Math.atan2;
 
 
-@SuppressWarnings({"NullableProblems", "deprecation"})
+@SuppressWarnings({"NullableProblems"})
 public abstract class PlateBlock extends BaseEntityBlock {
     public static VoxelShape SHAPE;
 
@@ -81,46 +82,63 @@ public abstract class PlateBlock extends BaseEntityBlock {
     //将点在了盘子内的有效放置区域外面的x和z修正为距离中心点最大距离处的同方向点
     //与盘子具体形状有关
 
+
     @Override
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player user, InteractionHand hand, BlockHitResult hitResult) {
+    protected ItemInteractionResult useItemOn(ItemStack item, BlockState state, Level level, BlockPos pos, Player user, InteractionHand hand, BlockHitResult hitResult) {
         if (!level.isClientSide()) {
             if (hitResult.getDirection() != Direction.UP) //点击的不是盘子上表面
-                return InteractionResult.PASS;
+                return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
             if (hand != InteractionHand.MAIN_HAND) //只允许主手交互
-                return InteractionResult.PASS;
+                return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
             BlockEntity blockEntity = level.getBlockEntity(pos);
             if (blockEntity instanceof PlateBlockEntity plate) {
-                ItemStack item = user.getItemInHand(hand);
                 Vec3 hit = hitResult.getLocation();
                 double x = hit.x - pos.getX();
                 double z = hit.z - pos.getZ(); //[0,1]
                 double rotX = user.getLookAngle().x;
                 double rotZ = user.getLookAngle().z;
-                if (item.isEmpty()) {//空手，把物品取出来
-                    if (plate.retriveItem(user, x, z)) { //尝试取回食物
-                        return InteractionResult.SUCCESS;
-                    }
-                } else {//手里拿着物品，放进去
-                    if (item.getItem() == ModItems.FORK.get()) {
-                        if (plate.eatItem(user, level, x, z)) {
-                            return InteractionResult.SUCCESS;
+                if (!item.isEmpty()) {
+                    {//手里拿着物品，放进去
+                        if (item.getItem() == ModItems.FORK.get()) {
+                            if (plate.eatItem(user, level, x, z)) {
+                                return ItemInteractionResult.SUCCESS;
+                            }
+                            return ItemInteractionResult.CONSUME;
                         }
-                        return InteractionResult.CONSUME;
-                    }
-                    if (item.getItem() instanceof BlockItem && !item.isEdible()) //不让放不能吃的方块
-                        return InteractionResult.CONSUME;
-                    if (shouldIgnore(x, z))
-                        return InteractionResult.CONSUME;
-                    PlatePos modifiedPos = getModifiedPos(x, z);
-                    x = modifiedPos.x;
-                    z = modifiedPos.z;
-                    ItemStack toPut = item.copyWithCount(1);
-                    if (plate.addFood(user, toPut, x, z, atan2(rotX, rotZ))) {
-                        if (!user.isCreative()) {
-                            item.shrink(1);
+                        if (item.getItem() instanceof BlockItem && item.getFoodProperties(user) == null) //不让放不能吃的方块
+                            return ItemInteractionResult.CONSUME;
+                        if (shouldIgnore(x, z))
+                            return ItemInteractionResult.CONSUME;
+                        PlatePos modifiedPos = getModifiedPos(x, z);
+                        x = modifiedPos.x;
+                        z = modifiedPos.z;
+                        ItemStack toPut = item.copyWithCount(1);
+                        if (plate.addFood(user, toPut, x, z, atan2(rotX, rotZ))) {
+                            if (!user.isCreative()) {
+                                item.shrink(1);
+                            }
+                            return ItemInteractionResult.SUCCESS;
                         }
-                        return InteractionResult.SUCCESS;
                     }
+                    return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+                }
+            }
+        }
+        return ItemInteractionResult.CONSUME;
+    }
+
+    @Override
+    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player user, BlockHitResult hitResult) {
+        if (!level.isClientSide()) {
+            if (hitResult.getDirection() != Direction.UP) //点击的不是盘子上表面
+                return InteractionResult.PASS;
+            BlockEntity blockEntity = level.getBlockEntity(pos);
+            if (blockEntity instanceof PlateBlockEntity plate) {
+                Vec3 hit = hitResult.getLocation();
+                double x = hit.x - pos.getX();
+                double z = hit.z - pos.getZ(); //[0,1]
+                if (plate.retriveItem(user, x, z)) { //尝试取回食物
+                    return InteractionResult.SUCCESS;
                 }
                 return InteractionResult.PASS;
             }
