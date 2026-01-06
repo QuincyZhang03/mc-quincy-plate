@@ -9,6 +9,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.function.Supplier;
 
+@SuppressWarnings("DataFlowIssue")
 public class ModBlockEntities {
     public static final DeferredRegister<BlockEntityType<?>> BLOCKENTITIES =
             DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, QuincyPlateMod.MODID);
