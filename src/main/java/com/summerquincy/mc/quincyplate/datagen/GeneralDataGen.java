@@ -20,10 +20,11 @@ public class GeneralDataGen {
         DataGenerator generator = e.getGenerator();
         var output = generator.getPackOutput();
         var fileHelper = e.getExistingFileHelper();
+        var future = e.getLookupProvider();
 
         generator.addProvider(e.includeClient(), new ModBlockStateGen(output, fileHelper));
-        generator.addProvider(e.includeServer(), new ModRecipeGen(output));
-        generator.addProvider(e.includeClient(),new ModItemModelGen(output,fileHelper));
+        generator.addProvider(e.includeServer(), new ModRecipeGen(output, future));
+        generator.addProvider(e.includeClient(), new ModItemModelGen(output, fileHelper));
         generator.addProvider(e.includeServer(), new LootTableProvider(output, Set.of(),
                 List.of(new LootTableProvider.SubProviderEntry(
                         () -> new ModBlockLootTableGen(Set.of(), FeatureFlags.REGISTRY.allFlags()),
