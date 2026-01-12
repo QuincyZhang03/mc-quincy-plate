@@ -1,9 +1,12 @@
 package com.summerquincy.mc.quincyplate.blockentity.data;
 
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.common.util.INBTSerializable;
 import org.jetbrains.annotations.NotNull;
@@ -41,7 +44,11 @@ public class PlateContent implements INBTSerializable<ListTag> {
         for (PlateContentItem contentItem : contents) {
             CompoundTag itemInfo = new CompoundTag();
             CompoundTag itemTag = new CompoundTag();
+            ItemStack item = contentItem.getItem();
+            itemTag.putString("id", BuiltInRegistries.ITEM.getKey(item.getItem()).toString());
+            itemTag.putByte("Count", (byte) item.getCount());
             itemInfo.put("item", itemTag);
+            //todo
             itemInfo.putDouble("posX", contentItem.getPosX());
             itemInfo.putDouble("posZ", contentItem.getPosZ());
             itemInfo.putDouble("rotation", contentItem.getRotation());

@@ -15,6 +15,7 @@ import org.apache.logging.log4j.Logger;
 // The value here should match an entry in the META-INF/mods.toml file
 //Mod入口类要用@Mod注解进行标注，参数填mods.toml里的modid。这个类的构造方法里写初始化行为。
 @Mod(QuincyPlateMod.MODID)
+@SuppressWarnings("unused")
 public class QuincyPlateMod
 {
     public static final String MODID = "quincyplate";

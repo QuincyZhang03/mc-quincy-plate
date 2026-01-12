@@ -98,16 +98,17 @@ public class PlateBlockEntity extends BlockEntity {
             Containers.dropContents(getLevel(), getBlockPos(), container);
     }
 
+
     @Override
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        tag.put("inventory", content.serializeNBT());//游戏保存时，把额外数据存进NBT里
+        tag.put("inventory", content.serializeNBT(registries));//游戏保存时，把额外数据存进NBT里
         super.saveAdditional(tag, registries);
     }
 
     @Override
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.loadAdditional(tag, registries);
-        content.deserializeNBT(tag.getList("inventory", Tag.TAG_COMPOUND));
+        content.deserializeNBT(registries, tag.getList("inventory", Tag.TAG_COMPOUND));
     }
 
     public PlateBlockEntity(BlockPos pPos, BlockState pBlockState) {
