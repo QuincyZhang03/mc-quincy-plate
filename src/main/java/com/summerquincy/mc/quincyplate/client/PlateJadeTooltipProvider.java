@@ -1,6 +1,5 @@
 package com.summerquincy.mc.quincyplate.client;
 
-import com.mojang.logging.LogUtils;
 import com.summerquincy.mc.quincyplate.blockentity.PlateBlockEntity;
 import com.summerquincy.mc.quincyplate.blockentity.data.PlateContentItem;
 import net.minecraft.nbt.CompoundTag;
