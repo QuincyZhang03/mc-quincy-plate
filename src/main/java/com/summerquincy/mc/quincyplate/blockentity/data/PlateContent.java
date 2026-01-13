@@ -59,9 +59,4 @@ public class PlateContent implements INBTSerializable<ListTag> {
         return contents;
     }
 
-    public static PlateContent ofNBT(ListTag nbt){
-        PlateContent content=new PlateContent();
-        content.deserializeNBT(nbt);
-        return content;
-    }
 }
