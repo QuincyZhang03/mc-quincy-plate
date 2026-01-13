@@ -32,7 +32,6 @@ public class PlateJadeTooltipProvider implements IBlockComponentProvider, IServe
     public void appendTooltip(ITooltip tooltip, BlockAccessor blockAccessor, IPluginConfig iPluginConfig) {
         if (blockAccessor.getBlockEntity() instanceof PlateBlockEntity) {
             ListTag itemList = blockAccessor.getServerData().getList(PLATE_ITEM_KEY, Tag.TAG_COMPOUND);
-            LogUtils.getLogger().info(itemList.toString());
             IElementHelper elementHelper = IElementHelper.get();
             ListIterator<Tag> it = itemList.listIterator();
             int rows = 0; //前面已有的行数
