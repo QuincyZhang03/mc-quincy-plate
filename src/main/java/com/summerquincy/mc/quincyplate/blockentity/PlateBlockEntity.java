@@ -111,6 +111,7 @@ public class PlateBlockEntity extends BlockEntity {
         content.deserializeNBT(registries, tag.getList("inventory", Tag.TAG_COMPOUND));
     }
 
+
     public PlateBlockEntity(BlockPos pPos, BlockState pBlockState) {
         super(ModBlockEntities.PLATE_BLOCK_ENTITY.get(), pPos, pBlockState);
 //        //这里把参数1删去了，为了匹配参数表，方便ModBlockEntities里可以使用PlateBlockEntitiy::new

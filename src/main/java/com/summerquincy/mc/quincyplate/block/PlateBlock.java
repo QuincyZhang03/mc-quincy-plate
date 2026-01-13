@@ -86,10 +86,12 @@ public abstract class PlateBlock extends BaseEntityBlock {
     @Override
     protected ItemInteractionResult useItemOn(ItemStack item, BlockState state, Level level, BlockPos pos, Player user, InteractionHand hand, BlockHitResult hitResult) {
         if (!level.isClientSide()) {
+            if (item.isEmpty())
+                return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
             if (hitResult.getDirection() != Direction.UP) //点击的不是盘子上表面
                 return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
             if (hand != InteractionHand.MAIN_HAND) //只允许主手交互
-                return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+                return ItemInteractionResult.CONSUME;
             BlockEntity blockEntity = level.getBlockEntity(pos);
             if (blockEntity instanceof PlateBlockEntity plate) {
                 Vec3 hit = hitResult.getLocation();
@@ -97,36 +99,34 @@ public abstract class PlateBlock extends BaseEntityBlock {
                 double z = hit.z - pos.getZ(); //[0,1]
                 double rotX = user.getLookAngle().x;
                 double rotZ = user.getLookAngle().z;
-                if (!item.isEmpty()) {
-                    {//手里拿着物品，放进去
-                        if (item.getItem() == ModItems.FORK.get()) {
-                            if (plate.eatItem(user, level, x, z)) {
-                                return ItemInteractionResult.SUCCESS;
-                            }
-                            return ItemInteractionResult.CONSUME;
-                        }
-                        if (item.getItem() instanceof BlockItem && item.getFoodProperties(user) == null) //不让放不能吃的方块
-                            return ItemInteractionResult.CONSUME;
-                        if (shouldIgnore(x, z))
-                            return ItemInteractionResult.CONSUME;
-                        PlatePos modifiedPos = getModifiedPos(x, z);
-                        x = modifiedPos.x;
-                        z = modifiedPos.z;
-                        ItemStack toPut = item.copyWithCount(1);
-                        if (plate.addFood(user, toPut, x, z, atan2(rotX, rotZ))) {
-                            if (!user.isCreative()) {
-                                item.shrink(1);
-                            }
+                {//手里拿着物品，放进去
+                    if (item.getItem() == ModItems.FORK.get()) {
+                        if (plate.eatItem(user, level, x, z)) {
                             return ItemInteractionResult.SUCCESS;
                         }
+                        return ItemInteractionResult.CONSUME;
                     }
-                    return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+                    if (item.getItem() instanceof BlockItem && item.getFoodProperties(user) == null) //不让放不能吃的方块
+                        return ItemInteractionResult.CONSUME;
+                    if (shouldIgnore(x, z))
+                        return ItemInteractionResult.CONSUME;
+                    PlatePos modifiedPos = getModifiedPos(x, z);
+                    x = modifiedPos.x;
+                    z = modifiedPos.z;
+                    ItemStack toPut = item.copyWithCount(1);
+                    if (plate.addFood(user, toPut, x, z, atan2(rotX, rotZ))) {
+                        if (!user.isCreative()) {
+                            item.shrink(1);
+                        }
+                        return ItemInteractionResult.SUCCESS;
+                    }
                 }
             }
         }
         return ItemInteractionResult.CONSUME;
     }
 
+    //注意useWithoutItem要在useItemOn返回PASS_TO_DEFAULT_BLOCK_INTERACTION后才会被调用
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player user, BlockHitResult hitResult) {
         if (!level.isClientSide()) {

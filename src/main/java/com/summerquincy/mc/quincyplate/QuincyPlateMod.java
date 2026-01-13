@@ -3,12 +3,12 @@ package com.summerquincy.mc.quincyplate;
 import com.summerquincy.mc.quincyplate.block.ModBlocks;
 import com.summerquincy.mc.quincyplate.blockentity.ModBlockEntities;
 import com.summerquincy.mc.quincyplate.creativetab.ModCreativeTabs;
+import com.summerquincy.mc.quincyplate.datagen.GeneralDataGen;
 import com.summerquincy.mc.quincyplate.item.ModItems;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.neoforged.neoforge.common.NeoForge;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -20,7 +20,6 @@ public class QuincyPlateMod
 {
     public static final String MODID = "quincyplate";
     public static final Logger LOGGER= LogManager.getLogger();
-//    private static final Logger LOGGER = LogUtils.getLogger();
     public QuincyPlateMod(IEventBus modEventBus, ModContainer container)
     {
         modEventBus.addListener(this::commonSetup);
@@ -30,9 +29,6 @@ public class QuincyPlateMod
         ModBlocks.register(modEventBus);
         ModBlockEntities.register(modEventBus);
         ModCreativeTabs.register(modEventBus);
-
-        // Register ourselves for server and other game events we are interested in
-        NeoForge.EVENT_BUS.register(this);
     }
 
     private void commonSetup(final FMLCommonSetupEvent event)

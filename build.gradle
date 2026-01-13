@@ -12,6 +12,9 @@ tasks.named('wrapper', Wrapper).configure {
     // (Verify by checking gradle/wrapper/gradle-wrapper.properties to see if distributionUrl now points to `-all`)
     distributionType = Wrapper.DistributionType.BIN
 }
+tasks.named('jar').configure {
+    archiveFileName = "${mod_id}-neoforge${minecraft_version}-v${mod_version}.jar"
+}
 
 version = mod_version
 group = mod_group_id
@@ -24,7 +27,6 @@ repositories {
 base {
     archivesName = mod_id
 }
-
 // Mojang ships Java 21 to end users in 1.21, so mods should target Java 21.
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
@@ -135,6 +137,8 @@ tasks.withType(ProcessResources).configureEach {
             mod_name               : mod_name,
             mod_license            : mod_license,
             mod_version            : mod_version,
+            mod_description        : mod_description,
+            mod_authors            : mod_authors
     ]
     inputs.properties replaceProperties
 

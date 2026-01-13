@@ -12,7 +12,7 @@ import net.neoforged.neoforge.data.event.GatherDataEvent;
 import java.util.List;
 import java.util.Set;
 
-@EventBusSubscriber(modid = QuincyPlateMod.MODID)
+@EventBusSubscriber(modid = QuincyPlateMod.MODID,bus = EventBusSubscriber.Bus.MOD)
 public class GeneralDataGen {
 
     @SubscribeEvent
@@ -27,8 +27,12 @@ public class GeneralDataGen {
         generator.addProvider(e.includeClient(), new ModItemModelGen(output, fileHelper));
         generator.addProvider(e.includeServer(), new LootTableProvider(output, Set.of(),
                 List.of(new LootTableProvider.SubProviderEntry(
-                        () -> new ModBlockLootTableGen(Set.of(), FeatureFlags.REGISTRY.allFlags()),
-                        LootContextParamSets.BLOCK))
+                        (provider) ->
+                                new ModBlockLootTableGen(Set.of(), FeatureFlags.REGISTRY.allFlags(),
+                                        provider),
+                        LootContextParamSets.BLOCK)
+                ),
+                future
         ));
     }
 }
