@@ -3,7 +3,6 @@ package com.summerquincy.mc.quincyplate;
 import com.summerquincy.mc.quincyplate.block.ModBlocks;
 import com.summerquincy.mc.quincyplate.blockentity.ModBlockEntities;
 import com.summerquincy.mc.quincyplate.creativetab.ModCreativeTabs;
-import com.summerquincy.mc.quincyplate.datagen.GeneralDataGen;
 import com.summerquincy.mc.quincyplate.item.ModItems;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;

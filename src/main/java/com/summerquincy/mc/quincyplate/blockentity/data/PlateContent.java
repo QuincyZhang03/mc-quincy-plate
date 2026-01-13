@@ -29,12 +29,6 @@ public class PlateContent implements INBTSerializable<ListTag> {
         return contents;
     }
 
-    public static PlateContent ofNBT(HolderLookup.@NotNull Provider provider, ListTag nbt) {
-        PlateContent content = new PlateContent();
-        content.deserializeNBT(provider, nbt);
-        return content;
-    }
-
 
     @Override
     public @UnknownNullability ListTag serializeNBT(HolderLookup.@NotNull Provider provider) {
