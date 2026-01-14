@@ -61,11 +61,15 @@ public class PlateBlockEntity extends BlockEntity {
         PlateContentItem selectedItem = selectItem(x, z, SELECTION_TOLERANCE);
         if (selectedItem == null || !selectedItem.getItem().isEdible()) return false;
         if (!user.canEat(false)) return false;
-        content.remove(selectedItem);
-        ForgeEventFactory.onItemUseFinish(user, selectedItem.getItem(),
-                selectedItem.getItem().getUseDuration(), ItemStack.EMPTY);//兼容生活调味料等mod
-        user.eat(level, selectedItem.getItem());
-        sync();
+        ItemStack originalStack = selectedItem.getItem();
+        ItemStack eatenStack = originalStack.copy();
+        ForgeEventFactory.onItemUseFinish(user, eatenStack,
+                eatenStack.getUseDuration(), ItemStack.EMPTY);//兼容生活调味料等mod，这个事件在双端都要触发
+        if (!level.isClientSide()) { //以下才是服务端逻辑
+            content.remove(selectedItem);
+            user.eat(level, eatenStack);
+            sync();
+        }
         return true;
     }
 
@@ -89,6 +93,7 @@ public class PlateBlockEntity extends BlockEntity {
         return null;
     }
 
+    @SuppressWarnings("DataFlowIssue")
     public void dropEverything() {
         List<PlateContentItem> foodList = content.getFoodList();
         SimpleContainer container = new SimpleContainer(foodList.size());
