@@ -20,6 +20,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.entity.living.LivingEntityUseItemEvent;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -61,10 +63,14 @@ public class PlateBlockEntity extends BlockEntity {
         PlateContentItem selectedItem = selectItem(x, z, SELECTION_TOLERANCE);
         if (selectedItem == null || selectedItem.getItem().getFoodProperties(user) == null) return false;
         if (!user.canEat(false)) return false;
-        content.remove(selectedItem);
-        selectedItem.getItem().finishUsingItem(level, user);//兼容生活调味料等mod
-        user.eat(level, selectedItem.getItem());
-        sync();
+        ItemStack stack = selectedItem.getItem();
+        LivingEntityUseItemEvent.Finish eatEvent = new LivingEntityUseItemEvent.Finish(user, stack, stack.getUseDuration(user), ItemStack.EMPTY);
+        NeoForge.EVENT_BUS.post(eatEvent);//兼容生活调味料等mod，这个事件在双端都要触发
+        if (!level.isClientSide()) { //以下才是服务端逻辑
+            content.remove(selectedItem);
+            user.eat(level, stack);
+            sync();
+        }
         return true;
     }
 
