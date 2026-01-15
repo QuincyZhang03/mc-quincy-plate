@@ -85,21 +85,21 @@ public abstract class PlateBlock extends BaseEntityBlock {
 
     @Override
     protected ItemInteractionResult useItemOn(ItemStack item, BlockState state, Level level, BlockPos pos, Player user, InteractionHand hand, BlockHitResult hitResult) {
-        if (item.isEmpty())
-            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
-        if (hitResult.getDirection() != Direction.UP) //点击的不是盘子上表面
-            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
-        if (hand != InteractionHand.MAIN_HAND) //只允许主手交互
-            return ItemInteractionResult.CONSUME;
-        BlockEntity blockEntity = level.getBlockEntity(pos);
-        if (blockEntity instanceof PlateBlockEntity plate) {
-            Vec3 hit = hitResult.getLocation();
-            double x = hit.x - pos.getX();
-            double z = hit.z - pos.getZ(); //[0,1]
-            double rotX = user.getLookAngle().x;
-            double rotZ = user.getLookAngle().z;
-            //手里拿着物品，吃掉或放进去
-            if (!level.isClientSide()) {
+        if (!level.isClientSide()) {
+            if (item.isEmpty())
+                return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+            if (hitResult.getDirection() != Direction.UP) //点击的不是盘子上表面
+                return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+            if (hand != InteractionHand.MAIN_HAND) //只允许主手交互
+                return ItemInteractionResult.CONSUME;
+            BlockEntity blockEntity = level.getBlockEntity(pos);
+            if (blockEntity instanceof PlateBlockEntity plate) {
+                Vec3 hit = hitResult.getLocation();
+                double x = hit.x - pos.getX();
+                double z = hit.z - pos.getZ(); //[0,1]
+                double rotX = user.getLookAngle().x;
+                double rotZ = user.getLookAngle().z;
+                //手里拿着物品，吃掉或放进去
                 if (item.getItem() == ModItems.FORK.get()) {
                     if (plate.eatItem(user, level, x, z)) {
                         return ItemInteractionResult.SUCCESS;
@@ -120,13 +120,31 @@ public abstract class PlateBlock extends BaseEntityBlock {
                     }
                     return ItemInteractionResult.SUCCESS;
                 }
-            } else if (item.getItem() == ModItems.FORK.get() && plate.eatItem(user, level, x, z)) {
-                //给食用动作单独开绿灯，让食用事件单独允许在客户端运行，从而兼容客户端动画。
-                //这里在eatItem()方法里也单独对客户端做了特殊处理，仅发送事件。
-                return ItemInteractionResult.SUCCESS;
             }
+        } else {
+            if (hitResult.getDirection() != Direction.UP) //点击的不是盘子上表面
+                return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+            if (hand != InteractionHand.MAIN_HAND) //只允许主手交互
+                return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+            BlockEntity blockEntity = level.getBlockEntity(pos);
+            if (blockEntity instanceof PlateBlockEntity plate) {
+                ItemStack handItem = user.getItemInHand(hand);
+                Vec3 hit = hitResult.getLocation();
+                double x = hit.x - pos.getX();
+                double z = hit.z - pos.getZ(); //[0,1]
+                if (handItem.getItem() == ModItems.FORK.get()) {
+                    if (plate.eatItem(user, level, x, z)) {
+                        return ItemInteractionResult.SUCCESS;
+                    }
+                }
+                return ItemInteractionResult.CONSUME;
+            }
+            //给食用动作单独开绿灯，让食用事件单独允许在客户端运行，从而兼容客户端动画。
+            //这里在eatItem()方法里也单独对客户端做了特殊处理，仅发送事件。
+            return ItemInteractionResult.SUCCESS;
         }
         return ItemInteractionResult.CONSUME;
+
     }
 
     //注意useWithoutItem要在useItemOn返回PASS_TO_DEFAULT_BLOCK_INTERACTION后才会被调用

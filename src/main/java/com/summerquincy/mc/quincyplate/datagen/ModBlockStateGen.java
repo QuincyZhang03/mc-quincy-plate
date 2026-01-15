@@ -17,5 +17,8 @@ public class ModBlockStateGen extends BlockStateProvider {
         simpleBlockWithItem(ModBlocks.WHITE_PLATE.get(), new ModelFile.UncheckedModelFile(modLoc("block/white_plate")));
         simpleBlockWithItem(ModBlocks.SQUARE_WHITE_PLATE.get(), new ModelFile.UncheckedModelFile(modLoc("block/square_white_plate")));
         //UncheckedModelFile在生成时不会检查是否真的存在，适合用于数据生成。
+        simpleBlockWithItem(ModBlocks.SQUARE_OAK_PLATE.get(), new ModelFile.UncheckedModelFile(modLoc("block/square_oak_plate")));
+        simpleBlockWithItem(ModBlocks.OCTAGON_WHITE_PLATE.get(), new ModelFile.UncheckedModelFile(modLoc("block/octagon_white_plate")));
+        simpleBlockWithItem(ModBlocks.OCTAGON_CHERRY_PLATE.get(), new ModelFile.UncheckedModelFile(modLoc("block/octagon_cherry_plate")));
     }
 }

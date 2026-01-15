@@ -21,7 +21,10 @@ public class ModBlockEntities {
             BLOCKENTITIES.register("plate_be", () ->
                     BlockEntityType.Builder.of(PlateBlockEntity::new,
                             ModBlocks.WHITE_PLATE.get(),
-                            ModBlocks.SQUARE_WHITE_PLATE.get()
+                            ModBlocks.SQUARE_WHITE_PLATE.get(),
+                            ModBlocks.SQUARE_OAK_PLATE.get(),
+                            ModBlocks.OCTAGON_WHITE_PLATE.get(),
+                            ModBlocks.OCTAGON_CHERRY_PLATE.get()
                     ).build(null)
             );
     //of方法的参数1是创建方块实体的方法引用，不定长参数2是关联方块。build里的参数可选，大多数时候可以写null

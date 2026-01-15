@@ -30,6 +30,31 @@ public class ModBlocks {
                             .sound(SoundType.GLASS)
                             .mapColor(MapColor.TERRACOTTA_WHITE)
                     ));
+    public static final DeferredBlock<Block> SQUARE_OAK_PLATE =
+            registerBlock("square_oak_plate",
+                    () -> new SquarePlateBlock(BlockBehaviour.Properties.of()
+                            .strength(0.5f)
+                            .sound(SoundType.WOOD)
+                            .mapColor(MapColor.WOOD)
+                    ));
+    public static final DeferredBlock<Block> OCTAGON_WHITE_PLATE =
+            registerBlock("octagon_white_plate",
+                    () -> new OctagonPlateBlock(BlockBehaviour.Properties.of()
+                            .strength(0.5f)
+                            .sound(SoundType.GLASS)
+                            .mapColor(MapColor.TERRACOTTA_WHITE),
+                            13, 0.53
+                    ));
+    public static final DeferredBlock<Block> OCTAGON_CHERRY_PLATE =
+            registerBlock("octagon_cherry_plate",
+                    () -> new OctagonPlateBlock(BlockBehaviour.Properties.of()
+                            .strength(0.5f)
+                            .sound(SoundType.WOOD)
+                            .mapColor(MapColor.TERRACOTTA_PINK),
+                            13, 0.53
+                    ));
+
+
 
     private static <T extends Block> DeferredBlock<T> registerBlock(String name, Supplier<T> supplier) {
         DeferredBlock<T> block = BLOCKS.register(name, supplier);

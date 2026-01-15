@@ -8,9 +8,9 @@ import org.jetbrains.annotations.NotNull;
 import static java.lang.Math.abs;
 
 public class SquarePlateBlock extends PlateBlock {
-    private static final double PLACING_WIDTH = (8 - 3.5) / 16.0 - PlateBlockEntityRenderer.ITEM_SIZE / 2 - 0.01;
+    private static final double PLACING_WIDTH = (12.725 - 8) / 16.0 - PlateBlockEntityRenderer.ITEM_SIZE / 2 - 0.005;
     //-0.005是为了防止物品贴图边缘超出边框
-    private static final double INTERACT_WIDTH = (8 - 2) / 16.0;
+    private static final double INTERACT_WIDTH = (8 - 1.7) / 16.0;
     private static final MapCodec<SquarePlateBlock> CODEC = simpleCodec(SquarePlateBlock::new);
 
     protected SquarePlateBlock(Properties p) {
