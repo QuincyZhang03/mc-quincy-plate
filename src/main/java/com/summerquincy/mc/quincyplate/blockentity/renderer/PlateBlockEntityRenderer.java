@@ -66,10 +66,13 @@ public class PlateBlockEntityRenderer implements BlockEntityRenderer<PlateBlockE
             poseStack.mulPose(Axis.YP.rotation((float) item.getRotation()));
             //先绕Y轴旋转，这时元素自身的X轴也跟着旋转了，再绕自身X轴旋转就可以躺在盘子上了
             poseStack.mulPose(Axis.XP.rotationDegrees(90));
-            renderer.renderStatic(item.getItem(), ItemDisplayContext.FIXED,
-                    getLightLevel(blockEntity.getLevel(), blockEntity.getBlockPos()),
-                    OverlayTexture.NO_OVERLAY, poseStack, buffer, blockEntity.getLevel(), 0
-            );
+            Level level = blockEntity.getLevel();
+            if (level != null) {
+                renderer.renderStatic(item.getItem(), ItemDisplayContext.FIXED,
+                        getLightLevel(blockEntity.getLevel(), blockEntity.getBlockPos()),
+                        OverlayTexture.NO_OVERLAY, poseStack, buffer, blockEntity.getLevel(), 0
+                );
+            }
             poseStack.popPose();
         }
     }

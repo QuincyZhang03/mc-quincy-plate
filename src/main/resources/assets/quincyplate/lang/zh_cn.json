@@ -1,9 +1,15 @@
 {
   "item.quincyplate.white_plate": "白色盘子",
   "item.quincyplate.square_white_plate": "方形白色盘子",
+  "item.quincyplate.square_oak_plate": "方形橡木盘子",
+  "item.quincyplate.octagon_white_plate": "八棱白色盘子",
+  "item.quincyplate.octagon_cherry_plate": "八棱樱花木盘",
   "item.quincyplate.fork": "餐叉",
   "block.quincyplate.white_plate": "白色盘子",
   "block.quincyplate.square_white_plate": "方形白色盘子",
+  "block.quincyplate.square_oak_plate": "方形橡木盘子",
+  "block.quincyplate.octagon_white_plate": "八棱白色盘子",
+  "block.quincyplate.octagon_cherry_plate": "八棱樱花木盘",
   "tooltip.quincyplate.and_so_on": "(按住Shift查看剩余 %d 项...)",
   "creativetab.quincyplate": "Quincy的盘子"
 }

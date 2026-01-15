@@ -20,9 +20,12 @@ public class ModCreativeTabs {
                     .title(Component.translatable("creativetab."+QuincyPlateMod.MODID))
                     .icon(()->new ItemStack(ModBlocks.WHITE_PLATE.get()))
                     .displayItems(((pParameters, pOutput) -> {
+                        pOutput.accept(ModItems.FORK.get());
                         pOutput.accept(ModBlocks.WHITE_PLATE.get());
                         pOutput.accept(ModBlocks.SQUARE_WHITE_PLATE.get());
-                        pOutput.accept(ModItems.FORK.get());
+                        pOutput.accept(ModBlocks.SQUARE_OAK_PLATE.get());
+                        pOutput.accept(ModBlocks.OCTAGON_WHITE_PLATE.get());
+                        pOutput.accept(ModBlocks.OCTAGON_CHERRY_PLATE.get());
                     }))
                     .build());
     public static void register(IEventBus bus){
