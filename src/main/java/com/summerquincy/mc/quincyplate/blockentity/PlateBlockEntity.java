@@ -20,6 +20,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.event.ForgeEventFactory;
+import net.minecraftforge.fml.ModList;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -60,13 +61,19 @@ public class PlateBlockEntity extends BlockEntity {
     public boolean eatItem(Player user, Level level, double x, double z) {
         PlateContentItem selectedItem = selectItem(x, z, SELECTION_TOLERANCE);
         if (selectedItem == null || !selectedItem.getItem().isEdible()) return false;
-        if (!user.canEat(false)) return false;
+        if (!user.canEat(ModList.get().isLoaded("salwayseat"))) return false;
         ItemStack stack = selectedItem.getItem();
         ForgeEventFactory.onItemUseFinish(user, stack,
                 stack.getUseDuration(), ItemStack.EMPTY);//兼容生活调味料等mod，这个事件在双端都要触发
         if (!level.isClientSide()) { //以下才是服务端逻辑
             content.remove(selectedItem);
-            user.eat(level, stack);
+            ItemStack remaining = stack.finishUsingItem(level, user);
+            if (!remaining.isEmpty()) { //e.g.蘑菇煲剩下碗
+                if (!user.addItem(remaining)) {//玩家背包满，掉出来
+                    BlockPos pos = getBlockPos();
+                    Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), remaining);
+                }
+            }
             sync();
         }
         return true;

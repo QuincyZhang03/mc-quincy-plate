@@ -1,8 +1,9 @@
 {
 	"parent":"quincyplate:block/square_white_plate",
 	"textures": {
+		"overlay": "minecraft:block/stripped_oak_log",
+		"particle": "minecraft:block/stripped_oak_log",
 		"bottom": "minecraft:block/stripped_oak_log",
-		"border": "minecraft:block/oak_log_top",
-		"particle": "minecraft:block/oak_log_top"
+		"border": "minecraft:block/oak_log_top"
 	}
 }
