@@ -16,7 +16,7 @@ public class RoundPlateBlock extends PlateBlock {
     private static final MapCodec<PlateBlock> CODEC = simpleCodec(RoundPlateBlock::new);
 
     protected RoundPlateBlock(Properties p) {
-        super(p, 12, 0.5);
+        super(p, 12, 0.6);
     }
 
     @Override

@@ -20,10 +20,9 @@ public class OctagonPlateBlock extends PlateBlock {
     private static final double MAX_INTERACT_RADIUS = (14.3 - 8) / COS_PI_OVER_8 / 16.0;//距离中心点超过这个值就直接不处理
 
 
-    protected OctagonPlateBlock(Properties p, double width, double height) {
-        super(p, width, height);
+    protected OctagonPlateBlock(Properties p) {
+        super(p, 14, 0.6);
     }
-
     @Override
     protected boolean shouldIgnore(double x, double z) {
         return !DistanceHelper.isDistanceWithinScope(x, z, 0.5, 0.5, getMaxDistanceInOctagon(x, z, MAX_INTERACT_RADIUS));

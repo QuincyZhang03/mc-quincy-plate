@@ -14,7 +14,7 @@ public class SquarePlateBlock extends PlateBlock {
     private static final MapCodec<SquarePlateBlock> CODEC = simpleCodec(SquarePlateBlock::new);
 
     protected SquarePlateBlock(Properties p) {
-        super(p, 12, 0.5);
+        super(p, 12, 0.6);
     }
 
     @Override

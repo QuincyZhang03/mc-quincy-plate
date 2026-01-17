@@ -42,16 +42,14 @@ public class ModBlocks {
                     () -> new OctagonPlateBlock(BlockBehaviour.Properties.of()
                             .strength(0.5f)
                             .sound(SoundType.GLASS)
-                            .mapColor(MapColor.TERRACOTTA_WHITE),
-                            13, 0.53
+                            .mapColor(MapColor.TERRACOTTA_WHITE)
                     ));
     public static final DeferredBlock<Block> OCTAGON_CHERRY_PLATE =
             registerBlock("octagon_cherry_plate",
                     () -> new OctagonPlateBlock(BlockBehaviour.Properties.of()
                             .strength(0.5f)
                             .sound(SoundType.WOOD)
-                            .mapColor(MapColor.TERRACOTTA_PINK),
-                            13, 0.53
+                            .mapColor(MapColor.TERRACOTTA_PINK)
                     ));
 
 
