@@ -22,40 +22,35 @@ public class ModBlocks {
                     () -> new RoundPlateBlock(BlockBehaviour.Properties.of()
                             .strength(0.5f)
                             .sound(SoundType.GLASS)
-                            .mapColor(MapColor.TERRACOTTA_WHITE),
-                            12, 0.5
+                            .mapColor(MapColor.TERRACOTTA_WHITE)
                     ));
     public static final RegistryObject<Block> SQUARE_WHITE_PLATE =
             registerBlock("square_white_plate",
                     () -> new SquarePlateBlock(BlockBehaviour.Properties.of()
                             .strength(0.5f)
                             .sound(SoundType.GLASS)
-                            .mapColor(MapColor.TERRACOTTA_WHITE),
-                            12, 0.525
+                            .mapColor(MapColor.TERRACOTTA_WHITE)
                     ));
     public static final RegistryObject<Block> SQUARE_OAK_PLATE =
             registerBlock("square_oak_plate",
                     () -> new SquarePlateBlock(BlockBehaviour.Properties.of()
                             .strength(0.5f)
                             .sound(SoundType.WOOD)
-                            .mapColor(MapColor.WOOD),
-                            12, 0.53
+                            .mapColor(MapColor.WOOD)
                     ));
     public static final RegistryObject<Block> OCTAGON_WHITE_PLATE =
             registerBlock("octagon_white_plate",
                     () -> new OctagonPlateBlock(BlockBehaviour.Properties.of()
                             .strength(0.5f)
                             .sound(SoundType.GLASS)
-                            .mapColor(MapColor.TERRACOTTA_WHITE),
-                            13, 0.53
+                            .mapColor(MapColor.TERRACOTTA_WHITE)
                     ));
     public static final RegistryObject<Block> OCTAGON_CHERRY_PLATE =
             registerBlock("octagon_cherry_plate",
                     () -> new OctagonPlateBlock(BlockBehaviour.Properties.of()
                             .strength(0.5f)
                             .sound(SoundType.WOOD)
-                            .mapColor(MapColor.TERRACOTTA_PINK),
-                            13, 0.53
+                            .mapColor(MapColor.TERRACOTTA_PINK)
                     ));
 
 

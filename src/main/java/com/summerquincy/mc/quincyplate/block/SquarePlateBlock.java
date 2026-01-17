@@ -12,6 +12,9 @@ public class SquarePlateBlock extends PlateBlock {
     protected SquarePlateBlock(Properties p, double width, double height) {
         super(p, width, height);
     }
+    protected SquarePlateBlock(Properties p) {
+       this(p,12,0.6);
+    }
 
     @Override
     protected boolean shouldIgnore(double x, double z) {

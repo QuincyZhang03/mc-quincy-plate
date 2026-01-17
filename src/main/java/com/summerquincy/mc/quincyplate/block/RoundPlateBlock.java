@@ -15,6 +15,10 @@ public class RoundPlateBlock extends PlateBlock {
         super(p, width, height);
     }
 
+    protected RoundPlateBlock(Properties p) {
+        this(p, 12, 0.6);
+    }
+
     @Override
     protected boolean shouldIgnore(double x, double z) {
         return !DistanceHelper.isDistanceWithinScope(x, z, 0.5, 0.5, INTERACT_RADIUS);
