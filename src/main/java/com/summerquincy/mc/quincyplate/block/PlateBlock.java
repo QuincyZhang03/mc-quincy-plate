@@ -4,11 +4,14 @@ import com.summerquincy.mc.quincyplate.blockentity.PlateBlockEntity;
 import com.summerquincy.mc.quincyplate.item.ModItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -100,7 +103,7 @@ public abstract class PlateBlock extends BaseEntityBlock {
                 double rotX = user.getLookAngle().x;
                 double rotZ = user.getLookAngle().z;
                 //手里拿着物品，吃掉或放进去
-                if (item.getItem() == ModItems.FORK.get()) {
+                if (isCutlery(item)) {
                     if (plate.eatItem(user, level, x, z)) {
                         return ItemInteractionResult.SUCCESS;
                     }
@@ -115,7 +118,7 @@ public abstract class PlateBlock extends BaseEntityBlock {
                 z = modifiedPos.z;
                 ItemStack toPut = item.copyWithCount(1);
                 if (plate.addFood(user, toPut, x, z, atan2(rotX, rotZ))) {
-                    if (!user.isCreative()) {
+                    if (!user.getAbilities().instabuild) {
                         item.shrink(1);
                     }
                     return ItemInteractionResult.SUCCESS;
@@ -132,7 +135,7 @@ public abstract class PlateBlock extends BaseEntityBlock {
                 Vec3 hit = hitResult.getLocation();
                 double x = hit.x - pos.getX();
                 double z = hit.z - pos.getZ(); //[0,1]
-                if (handItem.getItem() == ModItems.FORK.get()) {
+                if (isCutlery(handItem)) {
                     if (plate.eatItem(user, level, x, z)) {
                         return ItemInteractionResult.SUCCESS;
                     }
@@ -165,5 +168,15 @@ public abstract class PlateBlock extends BaseEntityBlock {
             }
         }
         return InteractionResult.CONSUME;
+    }
+
+    private boolean isCutlery(ItemStack stack) {
+        Item item = stack.getItem();
+        if (item == ModItems.FORK.get()) {
+            return true;
+        } else {
+            ResourceLocation id = BuiltInRegistries.ITEM.getKey(item);
+            return id.toString().equals("flavor_immersed_daily:chopsticks");
+        }
     }
 }

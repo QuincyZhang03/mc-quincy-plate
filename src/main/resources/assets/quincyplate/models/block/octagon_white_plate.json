@@ -4,10 +4,10 @@
 	"render_type": "minecraft:translucent",
 	"texture_size": [32, 32],
 	"textures": {
-		"overlay": "block/quartz_block_top",
-		"particle": "block/quartz_block_top",
-		"bottom": "block/quartz_block_bottom",
-		"border": "block/quartz_block_side"
+		"overlay": "minecraft:block/quartz_block_top",
+		"particle": "minecraft:block/quartz_block_top",
+		"bottom": "minecraft:block/quartz_block_bottom",
+		"border": "minecraft:block/quartz_block_side"
 	},
 	"elements": [
 		{

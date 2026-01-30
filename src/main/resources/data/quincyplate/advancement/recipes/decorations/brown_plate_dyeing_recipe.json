@@ -1,0 +1,43 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_brown_dye": {
+      "conditions": {
+        "items": [
+          {
+            "items": "minecraft:brown_dye"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_round_plates": {
+      "conditions": {
+        "items": [
+          {
+            "items": "#quincyplate:round_plates"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "quincyplate:brown_plate_dyeing_recipe"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_round_plates",
+      "has_brown_dye"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "quincyplate:brown_plate_dyeing_recipe"
+    ]
+  }
+}

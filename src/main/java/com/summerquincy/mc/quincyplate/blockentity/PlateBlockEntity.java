@@ -70,7 +70,7 @@ public class PlateBlockEntity extends BlockEntity {
         if (!level.isClientSide()) { //以下才是服务端逻辑
             content.remove(selectedItem);
             ItemStack remaining = stack.finishUsingItem(level, user);
-            if (!remaining.isEmpty()) { //e.g.蘑菇煲剩下碗
+            if (!user.getAbilities().instabuild && !remaining.isEmpty()) { //e.g.蘑菇煲剩下碗
                 if (!user.addItem(remaining)) {//玩家背包满，掉出来
                     BlockPos pos = getBlockPos();
                     Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), remaining);

@@ -12,7 +12,7 @@ import net.neoforged.neoforge.data.event.GatherDataEvent;
 import java.util.List;
 import java.util.Set;
 
-@EventBusSubscriber(modid = QuincyPlateMod.MODID,bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = QuincyPlateMod.MODID, bus = EventBusSubscriber.Bus.MOD)
 public class GeneralDataGen {
 
     @SubscribeEvent
@@ -20,10 +20,10 @@ public class GeneralDataGen {
         DataGenerator generator = e.getGenerator();
         var output = generator.getPackOutput();
         var fileHelper = e.getExistingFileHelper();
-        var future = e.getLookupProvider();
+        var lookupProvider = e.getLookupProvider();
 
         generator.addProvider(e.includeClient(), new ModBlockStateGen(output, fileHelper));
-        generator.addProvider(e.includeServer(), new ModRecipeGen(output, future));
+        generator.addProvider(e.includeServer(), new ModRecipeGen(output, lookupProvider));
         generator.addProvider(e.includeClient(), new ModItemModelGen(output, fileHelper));
         generator.addProvider(e.includeServer(), new LootTableProvider(output, Set.of(),
                 List.of(new LootTableProvider.SubProviderEntry(
@@ -32,7 +32,9 @@ public class GeneralDataGen {
                                         provider),
                         LootContextParamSets.BLOCK)
                 ),
-                future
+                lookupProvider
         ));
+        ModBlockTagGen blockTagGen = generator.addProvider(e.includeServer(), new ModBlockTagGen(output, lookupProvider, fileHelper));
+        generator.addProvider(e.includeServer(), new ModItemTagGen(output, lookupProvider, blockTagGen.contentsGetter(), fileHelper));
     }
 }
