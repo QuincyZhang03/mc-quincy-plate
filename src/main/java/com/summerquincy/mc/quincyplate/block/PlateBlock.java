@@ -119,7 +119,7 @@ public abstract class PlateBlock extends BaseEntityBlock {
                     z = modifiedPos.z;
                     ItemStack toPut = item.copyWithCount(1);
                     if (plate.addFood(user, toPut, x, z, atan2(rotX, rotZ))) {
-                        if (!user.isCreative()) {
+                        if (!user.getAbilities().instabuild) {
                             item.shrink(1);
                         }
                         return InteractionResult.SUCCESS;
@@ -138,8 +138,8 @@ public abstract class PlateBlock extends BaseEntityBlock {
                 Vec3 hit = hitResult.getLocation();
                 double x = hit.x - pos.getX();
                 double z = hit.z - pos.getZ(); //[0,1]
-                if (item.getItem() == ModItems.FORK.get()) {
-                    if (plate.eatItem(user, level, x, z)) {
+                if (isCutlery(item)) {
+                    if (plate.eatItem(user, level, x, z)) { //仅发送事件，不吃
                         return InteractionResult.SUCCESS;
                     }
                 }

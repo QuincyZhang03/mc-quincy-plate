@@ -1,0 +1,46 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_gray_dye": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:gray_dye"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_round_plates": {
+      "conditions": {
+        "items": [
+          {
+            "tag": "quincyplate:round_plates"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "quincyplate:gray_plate_dyeing_recipe"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_round_plates",
+      "has_gray_dye",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "quincyplate:gray_plate_dyeing_recipe"
+    ]
+  },
+  "sends_telemetry_event": false
+}
