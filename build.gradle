@@ -15,6 +15,7 @@ tasks.named('wrapper', Wrapper).configure {
 }
 tasks.named('jar').configure {
     archiveFileName = "${mod_id}-neoforge${minecraft_version}-v${mod_version}.jar"
+    exclude 'com/summerquincy/mc/quincyplate/datagen/**'
 }
 
 version = mod_version
