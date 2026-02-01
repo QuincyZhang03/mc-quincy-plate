@@ -14,7 +14,6 @@ import java.util.Set;
 
 @Mod.EventBusSubscriber(modid = QuincyPlateMod.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class GeneralDataGen {
-
     @SubscribeEvent
     public static void gatherData(GatherDataEvent e) {
         DataGenerator generator = e.getGenerator();

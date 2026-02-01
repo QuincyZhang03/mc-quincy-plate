@@ -12,14 +12,21 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-// The value here should match an entry in the META-INF/mods.toml file
-//Mod入口类要用@Mod注解进行标注，参数填mods.toml里的modid。这个类的构造方法里写初始化行为。
+/*
+* 1.0.1更新内容：
+* 餐叉现在可以+2攻击伤害
+* 调整CreativeTab里的物品顺序
+* 为餐叉添加了Tooltip
+* 替换了餐叉的纹理
+* 替换了蓝色、青色盘子的盘底纹理
+* 替换了黄色盘子的盘沿纹理
+* 优化jar包结构，减小jar包体积5%
+* */
 @Mod(QuincyPlateMod.MODID)
 public class QuincyPlateMod
 {
     public static final String MODID = "quincyplate";
     public static final Logger LOGGER= LogManager.getLogger();
-//    private static final Logger LOGGER = LogUtils.getLogger();
     public QuincyPlateMod(FMLJavaModLoadingContext context)
     {
         IEventBus modEventBus = context.getModEventBus();

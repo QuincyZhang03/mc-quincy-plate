@@ -11,7 +11,7 @@ import net.minecraftforge.registries.RegistryObject;
 @Mod.EventBusSubscriber(modid = QuincyPlateMod.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ModItems {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, QuincyPlateMod.MODID);
-    public static final RegistryObject<Item> FORK = ITEMS.register("fork", () -> new Item(new Item.Properties().stacksTo(1)));
+    public static final RegistryObject<Item> FORK = ITEMS.register("fork", () -> new ForkItem(new Item.Properties().stacksTo(1)));
 
     public static void register(IEventBus bus) {
         ITEMS.register(bus);

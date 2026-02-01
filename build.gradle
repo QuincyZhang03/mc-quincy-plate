@@ -1,4 +1,5 @@
 //file:noinspection GroovyAssignabilityCheck
+//file:noinspection VulnerableLibrariesLocal
 plugins {
     id 'eclipse'
     id 'idea'
@@ -184,8 +185,9 @@ tasks.named('jar', Jar).configure {
                 'Implementation-Vendor'   : mod_authors,
                 'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
         ])
-    }
 
+    }
+    exclude 'com/summerquincy/mc/quincyplate/datagen/**'
     // This is the preferred method to reobfuscate your jar file
     finalizedBy 'reobfJar'
 }

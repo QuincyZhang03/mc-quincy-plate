@@ -51,5 +51,6 @@
   "block.quincyplate.octagon_yellow_plate": "八棱黄色盘子",
   "item.quincyplate.fork": "餐叉",
   "tooltip.quincyplate.and_so_on": "(按住Shift查看剩余 %d 项...)",
-  "creativetab.quincyplate": "Quincy的盘子"
+  "creativetab.quincyplate": "Quincy的盘子",
+  "tooltip.quincyplate.fork_common": "§7手持右键盘子里的食物可以直接吃掉"
 }
