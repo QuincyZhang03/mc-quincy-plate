@@ -123,6 +123,7 @@ public abstract class PlateBlock extends BaseEntityBlock {
                     }
                     return ItemInteractionResult.SUCCESS;
                 }
+                return ItemInteractionResult.CONSUME;
             }
         } else {
             if (hitResult.getDirection() != Direction.UP) //点击的不是盘子上表面

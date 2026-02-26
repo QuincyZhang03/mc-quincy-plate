@@ -52,5 +52,6 @@
   "item.quincyplate.fork": "餐叉",
   "tooltip.quincyplate.and_so_on": "(按住Shift查看剩余 %d 项...)",
   "creativetab.quincyplate": "Quincy的盘子",
-  "tooltip.quincyplate.fork_common": "§7手持右键盘子里的食物可以直接吃掉"
+  "tooltip.quincyplate.fork_common": "§7手持右键盘子里的食物可以直接吃掉",
+  "message.quincyplate.plate_full": "这个盘子最多只能装%d个食物，已经满了。"
 }

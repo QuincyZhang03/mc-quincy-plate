@@ -4,6 +4,7 @@ import com.summerquincy.mc.quincyplate.block.ModBlocks;
 import com.summerquincy.mc.quincyplate.blockentity.ModBlockEntities;
 import com.summerquincy.mc.quincyplate.creativetab.ModCreativeTabs;
 import com.summerquincy.mc.quincyplate.item.ModItems;
+import net.minecraft.world.level.GameRules;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
@@ -19,6 +20,8 @@ public class QuincyPlateMod
 {
     public static final String MODID = "quincyplate";
     public static final Logger LOGGER= LogManager.getLogger();
+    public static final GameRules.Key<GameRules.IntegerValue> RULE_MAX_PLATE_SIZE=GameRules.register("quincyPlateMaxSize", GameRules.Category.MISC, GameRules.IntegerValue.create(-1));
+
     public QuincyPlateMod(IEventBus modEventBus, ModContainer container)
     {
         modEventBus.addListener(this::commonSetup);
