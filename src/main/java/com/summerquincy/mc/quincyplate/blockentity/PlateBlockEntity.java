@@ -1,12 +1,15 @@
 package com.summerquincy.mc.quincyplate.blockentity;
 
+import com.summerquincy.mc.quincyplate.QuincyPlateMod;
 import com.summerquincy.mc.quincyplate.blockentity.data.PlateContent;
 import com.summerquincy.mc.quincyplate.blockentity.data.PlateContentItem;
 import com.summerquincy.mc.quincyplate.blockentity.renderer.PlateBlockEntityRenderer;
 import com.summerquincy.mc.quincyplate.util.DistanceHelper;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
@@ -32,9 +35,14 @@ public class PlateBlockEntity extends BlockEntity {
     public static final double SELECTION_TOLERANCE = 0.32 * Math.sqrt(2) * PlateBlockEntityRenderer.ITEM_SIZE;
     //这是选中物品的最大容差，误差超过这个值就判定为没选中任何物品
 
-
     public boolean addFood(Player user, ItemStack food, double x, double z, double rotation) {
         //尝试放入食物，成功返回true，失败返回false
+        if (level == null) return false;
+        int maxFoodNum = level.getGameRules().getInt(QuincyPlateMod.RULE_MAX_PLATE_SIZE);
+        if (maxFoodNum >= 0 && content.getFoodList().size() >= maxFoodNum) {
+            user.sendSystemMessage(Component.translatable("message.quincyplate.plate_full", maxFoodNum).withStyle(ChatFormatting.RED));
+            return false;
+        }
         user.level().playSound(null, user.getX(), user.getY(), user.getZ(), SoundEvents.ITEM_FRAME_ADD_ITEM, SoundSource.NEUTRAL,
                 0.4f, 1.0f + user.getRandom().nextIntBetweenInclusive(-2, 2) * 0.1f);
         //参数1为null则所有人都能听到

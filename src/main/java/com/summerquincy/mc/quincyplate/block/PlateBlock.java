@@ -124,6 +124,7 @@ public abstract class PlateBlock extends BaseEntityBlock {
                         }
                         return InteractionResult.SUCCESS;
                     }
+                    return InteractionResult.CONSUME;
                 }
                 return InteractionResult.PASS;
             }
