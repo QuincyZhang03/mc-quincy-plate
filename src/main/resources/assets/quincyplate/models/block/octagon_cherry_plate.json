@@ -1,0 +1,9 @@
+{
+	"parent":"quincyplate:block/octagon_white_plate",
+	"textures": {
+		"overlay": "minecraft:block/cherry_leaves",
+		"particle": "minecraft:block/stripped_cherry_log_top",
+		"bottom": "minecraft:block/stripped_cherry_log_top",
+		"border": "minecraft:block/stripped_cherry_log_top"
+	}
+}

@@ -1,0 +1,9 @@
+{
+	"parent":"quincyplate:block/square_white_plate",
+	"textures": {
+		"overlay": "quincyplate:block/pink_bottom",
+		"particle": "quincyplate:block/pink_bottom",
+		"bottom": "quincyplate:block/pink_bottom",
+		"border": "quincyplate:block/pink_side"
+	}
+}

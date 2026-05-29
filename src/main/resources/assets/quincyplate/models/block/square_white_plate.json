@@ -1,0 +1,138 @@
+{
+	"format_version": "1.9.0",
+	"credit": "Made with Blockbench",
+	"render_type": "minecraft:translucent",
+	"texture_size": [32, 32],
+	"textures": {
+		"overlay": "minecraft:block/quartz_block_top",
+		"particle": "minecraft:block/quartz_block_top",
+		"bottom": "minecraft:block/quartz_block_bottom",
+		"border": "minecraft:block/quartz_block_side"
+	},
+	"elements": [
+		{
+			"name": "overlay",
+			"from": [3.2375, 0.01, 3.2375],
+			"to": [12.7625, 0.61, 12.7625],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 0.2375, 8]},
+			"faces": {
+				"up": {"uv": [15, 15, 1, 1], "rotation": 180, "texture": "#overlay"}
+			}
+		},
+		{
+			"name": "盘底",
+			"from": [2.4875, 0, 2.4875],
+			"to": [13.5125, 0.6, 13.5125],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 0.2375, 8]},
+			"faces": {
+				"north": {"uv": [15, 0, 1, 1], "texture": "#bottom"},
+				"east": {"uv": [16, 1, 15, 15], "rotation": 90, "texture": "#bottom"},
+				"south": {"uv": [1, 15, 15, 16], "texture": "#bottom"},
+				"west": {"uv": [0, 1, 1, 15], "rotation": 270, "texture": "#bottom"},
+				"up": {"uv": [15, 15, 1, 1], "rotation": 180, "texture": "#bottom"},
+				"down": {"uv": [1, 1, 15, 15], "texture": "#bottom"}
+			}
+		},
+		{
+			"name": "z-",
+			"from": [3.275, 0.345, 1.7],
+			"to": [14.3, 1.095, 3.275],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 0, 8]},
+			"faces": {
+				"north": {"uv": [16, 0, 2, 2], "texture": "#border"},
+				"east": {"uv": [14, 0, 16, 2], "texture": "#border"},
+				"south": {"uv": [2, 1, 16, 2], "texture": "#border"},
+				"up": {"uv": [2, 0, 16, 2], "texture": "#border"},
+				"down": {"uv": [2, 0, 16, 2], "texture": "#border"}
+			}
+		},
+		{
+			"name": "z+",
+			"from": [1.7, 0.345, 12.725],
+			"to": [12.725, 1.095, 14.3],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 0, 8]},
+			"faces": {
+				"north": {"uv": [0, 15, 14, 16], "texture": "#border"},
+				"south": {"uv": [0, 16, 14, 14], "texture": "#border"},
+				"west": {"uv": [0, 14, 2, 16], "rotation": 180, "texture": "#border"},
+				"up": {"uv": [0, 14, 14, 16], "texture": "#border"},
+				"down": {"uv": [0, 14, 14, 16], "rotation": 180, "texture": "#border"}
+			}
+		},
+		{
+			"name": "x-",
+			"from": [1.7, 0.345, 1.7],
+			"to": [3.275, 1.095, 12.725],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 0, 8]},
+			"faces": {
+				"north": {"uv": [0, 0, 2, 2], "rotation": 90, "texture": "#border"},
+				"east": {"uv": [0, 0, 1, 14], "rotation": 270, "texture": "#border"},
+				"west": {"uv": [2, 0, 0, 14], "rotation": 270, "texture": "#border"},
+				"up": {"uv": [0, 0, 2, 14], "texture": "#border"},
+				"down": {"uv": [0, 0, 2, 14], "rotation": 180, "texture": "#border"}
+			}
+		},
+		{
+			"name": "x+",
+			"from": [12.725, 0.345, 3.275],
+			"to": [14.3, 1.095, 14.3],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 0, 8]},
+			"faces": {
+				"east": {"uv": [16, 2, 14, 16], "rotation": 90, "texture": "#border"},
+				"south": {"uv": [14, 14, 16, 16], "rotation": 270, "texture": "#border"},
+				"west": {"uv": [14, 2, 15, 16], "rotation": 270, "texture": "#border"},
+				"up": {"uv": [14, 2, 16, 16], "texture": "#border"},
+				"down": {"uv": [14, 2, 16, 16], "texture": "#border"}
+			}
+		}
+	],
+	"display": {
+		"thirdperson_righthand": {
+			"rotation": [45, 0, 0],
+			"translation": [0, 4.5, 1.5],
+			"scale": [0.5, 0.5, 0.5]
+		},
+		"thirdperson_lefthand": {
+			"rotation": [45, 0, 0],
+			"translation": [0, 4.5, 1.5],
+			"scale": [0.5, 0.5, 0.5]
+		},
+		"firstperson_righthand": {
+			"rotation": [6, 4, 17],
+			"translation": [-1.5, 4, 0.5],
+			"scale": [0.7, 0.7, 0.7]
+		},
+		"firstperson_lefthand": {
+			"rotation": [6, 4, 17],
+			"translation": [-1.5, 4, 0.5],
+			"scale": [0.7, 0.7, 0.7]
+		},
+		"ground": {
+			"translation": [0, 2, 0],
+			"scale": [0.5, 0.5, 0.5]
+		},
+		"gui": {
+			"rotation": [30, -135, 0],
+			"translation": [0, 3, 0],
+			"scale": [0.8, 0.8, 0.8]
+		},
+		"fixed": {
+			"rotation": [-90, 0, 0],
+			"translation": [0, 0, -7.5]
+		},
+		"on_shelf": {
+			"rotation": [90, 0, 0],
+			"translation": [0, 0, 4]
+		}
+	},
+	"groups": [
+		0,
+		1,
+		{
+			"name": "盘沿",
+			"origin": [16, 0, 0],
+			"color": 0,
+			"children": [2, 3, 4, 5]
+		}
+	]
+}

@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "item": "minecraft:cherry_slab"
+    },
+    "*": {
+      "item": "minecraft:cherry_leaves"
+    },
+    "@": {
+      "item": "minecraft:cherry_log"
+    }
+  },
+  "pattern": [
+    "@# ",
+    "#*#",
+    " #@"
+  ],
+  "result": {
+    "count": 2,
+    "item": "quincyplate:octagon_cherry_plate"
+  },
+  "show_notification": true
+}
