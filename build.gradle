@@ -43,7 +43,6 @@ processResources {
 
 tasks.withType(JavaCompile).configureEach {
     it.options.release = 17
-    archiveFileName="${mod_id}-fabric${minecraft_version}-v${mod_version}.jar"
 }
 
 java {
@@ -64,6 +63,9 @@ jar {
     }
 }
 
+remapJar{
+    archiveFileName="${mod_id}-fabric${minecraft_version}-v${mod_version}.jar"
+}
 // configure the maven publication
 publishing {
     publications {
