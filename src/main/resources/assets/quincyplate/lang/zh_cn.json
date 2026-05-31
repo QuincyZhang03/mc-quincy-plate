@@ -52,8 +52,9 @@
   "item.quincyplate.fork": "餐叉",
   "tooltip.quincyplate.and_so_on": "(按住Shift查看剩余 %d 项...)",
   "creativetab.quincyplate": "Quincy的盘子",
-  "tooltip.quincyplate.fork_common": "§7手持右键盘子里的食物可以直接吃掉",
-  "message.quincyplate.plate_full": "这个盘子最多只能装%d个食物，已经满了。",
+  "tooltip.quincyplate.fork_common": "§7手持右键盘子里的食物可以直接吃掉\nShift+右键盘子里的食物可以插上去",
+  "message.quincyplate.plate_full": "这个盘子最多只能装%d个物品，已经满了。",
   "gamerule.quincyPlateMaxSize": "Quincy的盘子容量",
-  "gamerule.quincyPlateMaxSize.description": "决定每个Quincy的盘子最多能放多少个物品。"
+  "gamerule.quincyPlateMaxSize.description": "决定每个Quincy的盘子最多能放多少个物品。",
+  "message.quincyplate.prevented_by_fork": "旁边有叉子，这里放不下..."
 }

@@ -8,7 +8,7 @@ import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 
 public class ModItems {
-    public static Item FORK =register("fork",new ForkItem(new Item.Settings()));
+    public static Item FORK =register("fork",new ForkItem());
 
 
     private static Item register(String regName, Item item) {

@@ -52,8 +52,9 @@
   "item.quincyplate.fork": "Fork",
   "tooltip.quincyplate.and_so_on": "(Hold Shift to view %d more items...)",
   "creativetab.quincyplate": "Quincy's Plate",
-  "tooltip.quincyplate.fork_common": "§7Right-click food in a plate with this allows you to directly eat it.",
+  "tooltip.quincyplate.fork_common": "§7Right-click food in a plate with this allows you to directly eat it.\nShift+Right-click food in a plate to stick onto it.",
   "message.quincyplate.plate_full": "This plate can hold a maximum of %d items. It's full.",
   "gamerule.quincyPlateMaxSize": "Quincy's Plate Max Size",
-  "gamerule.quincyPlateMaxSize.description": "Defines the maximum of items placed in each plate."
+  "gamerule.quincyPlateMaxSize.description": "Defines the maximum of items placed in each plate.",
+  "message.quincyplate.prevented_by_fork": "Not enough space due to the fork nearby..."
 }

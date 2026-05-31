@@ -4,6 +4,7 @@ import com.summerquincy.mc.quincyplate.QuincysPlate;
 import com.summerquincy.mc.quincyplate.blockentity.data.PlateContent;
 import com.summerquincy.mc.quincyplate.blockentity.data.PlateContentItem;
 import com.summerquincy.mc.quincyplate.blockentity.renderer.PlateBlockEntityRenderer;
+import com.summerquincy.mc.quincyplate.item.ModItems;
 import com.summerquincy.mc.quincyplate.util.DistanceHelper;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.BlockState;
@@ -33,14 +34,14 @@ public class PlateBlockEntity extends BlockEntity {
     private final PlateContent content = new PlateContent();
     public static final double SELECTION_TOLERANCE = 0.32 * Math.sqrt(2) * PlateBlockEntityRenderer.ITEM_SIZE;
     //这是选中物品的最大容差，误差超过这个值就判定为没选中任何物品
-
+    public static final double FORK_PREVENT_DISTANCE = SELECTION_TOLERANCE * 1.4; //在这个范围内有叉子则禁止放置食物
+    public static final double FORK_ON_FOOD_DISTANCE = SELECTION_TOLERANCE * 0.7; //叉子距离食物在这个范围内才允许插上去
 
     public PlateBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntityTypes.PLATE_BLOCK_ENTITY, pos, state);
     }
 
-    public boolean addFood(PlayerEntity user, ItemStack food, double x, double z, double rotation) {
-        //尝试放入食物，成功返回true，失败返回false
+    public boolean addItem(PlayerEntity user, ItemStack item, double x, double z, double rotation) {
         if (world == null) return false;
         int maxFoodNum = world.getGameRules().getInt(QuincysPlate.RULE_MAX_PLATE_SIZE);
         if (maxFoodNum >= 0 && content.getFoodList().size() >= maxFoodNum) {
@@ -50,22 +51,63 @@ public class PlateBlockEntity extends BlockEntity {
         user.getWorld().playSound(null, user.getX(), user.getY(), user.getZ(), SoundEvents.ENTITY_ITEM_FRAME_ADD_ITEM, SoundCategory.NEUTRAL,
                 0.4f, 1.0f + user.getRandom().nextBetweenExclusive(-2, 2) * 0.1f);
         //参数1为null则所有人都能听到
-        content.add(food, x, z, rotation);
+        content.add(item, x, z, rotation);
         sync();
         return true;
     }
 
-    public boolean retriveItem(PlayerEntity user, double x, double z) {
+    public void removeItem(PlateContentItem item) {
+        content.remove(item);
+        BlockPos pos = getPos();
+        List<PlateContentItem> foodList = content.getFoodList();
+        for (int i = foodList.size() - 1; i >= 0; i--) { //掉落浮空叉子
+            PlateContentItem contentItem = foodList.get(i);
+            if (contentItem.getItem().isOf(ModItems.FORK)) {
+                if (selectItem(contentItem.getPosX(), contentItem.getPosZ(), FORK_ON_FOOD_DISTANCE, true) == null) {
+                    content.remove(contentItem);
+                    if (world != null)
+                        ItemScatterer.spawn(world, pos.getX(), pos.getY(), pos.getZ(), contentItem.getItem());
+                }
+            }
+        }
+        sync();
+    }
+
+    public boolean addFood(PlayerEntity user, ItemStack food, double x, double z, double rotation) {
+        //尝试放入食物，成功返回true，失败返回false
+        if (forkExistsWithinScope(x, z, FORK_PREVENT_DISTANCE)) {
+            user.sendMessage(Text.translatable("message.quincyplate.prevented_by_fork").setStyle(Style.EMPTY.withColor(Formatting.RED)));
+            return false;
+        }
+        return addItem(user, food, x, z, rotation);
+    }
+
+    public boolean retrieveItem(PlayerEntity user, double x, double z) {
         //尝试把物品还给玩家，成功返回true，失败返回false
         PlateContentItem retrievedItem = selectItem(x, z, SELECTION_TOLERANCE);
-        if (retrievedItem == null) return false;
+        if (retrievedItem == null || !retrievedItem.getItem().isOf(ModItems.FORK)) {//有叉子先拿叉子
+            List<PlateContentItem> list = content.getFoodList();
+            double minDistance = -1;
+            PlateContentItem minDistanceFork = null;
+            for (PlateContentItem item : list) { //选出距离最近的叉子
+                if (item.getItem().isOf(ModItems.FORK)) {
+                    double distance = DistanceHelper.getDistanceSquared(x, z, item.getPosX(), item.getPosZ());
+                    if (minDistanceFork == null || minDistance > distance) {
+                        minDistanceFork = item;
+                        minDistance = distance;
+                    }
+                }
+            }
+            if (minDistanceFork != null) retrievedItem = minDistanceFork;
+        }
+        if (retrievedItem == null) return false; //还是没有就不拿
         if (!user.giveItemStack(retrievedItem.getItem())) {
             return false;
         }
         //参数1为null则所有人都能听到
         user.getWorld().playSound(null, user.getX(), user.getY(), user.getZ(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS,
                 0.4f, 1.0f + user.getRandom().nextBetweenExclusive(-2, 2) * 0.1f);
-        content.remove(retrievedItem);
+        removeItem(retrievedItem);
         sync();
         return true;
     }
@@ -78,7 +120,7 @@ public class PlateBlockEntity extends BlockEntity {
         ItemStack stack = selectedItem.getItem();
 
         if (!world.isClient) { //以下才是服务端逻辑
-            content.remove(selectedItem);
+            removeItem(selectedItem);
             ItemStack remaining = stack.finishUsing(world, user);
             if (!user.getAbilities().creativeMode && !remaining.isEmpty()) { //e.g.蘑菇煲剩下碗  创造模式因为不消耗所以不返还
                 if (!user.giveItemStack(remaining)) {//玩家背包满，掉出来
@@ -98,18 +140,47 @@ public class PlateBlockEntity extends BlockEntity {
             world.updateListeners(pos, state, state, 0);
         }
     }
+    public boolean stickFork(PlayerEntity user, ItemStack fork, double x, double z, double rotation) {
+        PlateContentItem underneathItem = selectItem(x, z, FORK_ON_FOOD_DISTANCE);
+        if (underneathItem == null) return false;
+        if (underneathItem.getItem().isOf(ModItems.FORK)) return false;
+        return addItem(user, fork, x, z, rotation);
+    }
 
-    public PlateContentItem selectItem(double x, double z, double max_distance) {
+
+    public PlateContentItem selectItem(double x, double z, double max_distance,boolean foodOnly) {
         //返回(x,z)为中心max_distance半径范围内y值最大的一项（索引最大的一项），未找到返回null
         List<PlateContentItem> foodList = content.getFoodList();
         for (int i = foodList.size() - 1; i >= 0; i--) {
             PlateContentItem contentItem = foodList.get(i);
+            if (foodOnly && contentItem.getItem().isOf(ModItems.FORK)) {
+                continue;
+            }
             if (DistanceHelper.isDistanceWithinScope(x, z, contentItem.getPosX(), contentItem.getPosZ(), max_distance)) {
                 return contentItem;
             }
         }
         return null;
     }
+
+    public PlateContentItem selectItem(double x, double z, double max_distance) {
+        return selectItem(x, z, max_distance, false);
+    }
+
+
+    private boolean forkExistsWithinScope(double x, double z, double max_distance) {
+        //返回(x,z)为中心max_distance半径范围内是否存在叉子
+        List<PlateContentItem> foodList = content.getFoodList();
+        for (PlateContentItem contentItem : foodList) {
+            if (contentItem.getItem().isOf(ModItems.FORK) &&
+                    DistanceHelper.isDistanceWithinScope(x, z, contentItem.getPosX(), contentItem.getPosZ(), max_distance)
+            ) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     public void dropEverything() {
         List<PlateContentItem> foodList = content.getFoodList();

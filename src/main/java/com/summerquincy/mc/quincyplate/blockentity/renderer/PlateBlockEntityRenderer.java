@@ -2,6 +2,7 @@ package com.summerquincy.mc.quincyplate.blockentity.renderer;
 
 import com.summerquincy.mc.quincyplate.blockentity.PlateBlockEntity;
 import com.summerquincy.mc.quincyplate.blockentity.data.PlateContentItem;
+import com.summerquincy.mc.quincyplate.item.ModItems;
 import com.summerquincy.mc.quincyplate.util.DistanceHelper;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.OverlayTexture;
@@ -13,6 +14,7 @@ import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
 import net.minecraft.client.render.model.json.ModelTransformationMode;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.RotationAxis;
 import net.minecraft.world.World;
 
@@ -41,32 +43,33 @@ public class PlateBlockEntityRenderer implements BlockEntityRenderer<PlateBlockE
                 item.initLayer();
                 double x = item.getPosX();
                 double z = item.getPosZ();
+                ItemStack itemStack = item.getItem();
                 for (int j = 0; j < i; j++) {
                     //搜索已经渲染的物品，在待渲染位置附近的叠在高度上
                     //最终渲染层数=附近最高的物品层数+1
                     PlateContentItem prevItem = foodList.get(j);
-                    if (DistanceHelper.isDistanceWithinScope(x, z, prevItem.getPosX(), prevItem.getPosZ(),
-                            2 * PlateBlockEntity.SELECTION_TOLERANCE)) {
+                    if (DistanceHelper.isDistanceWithinScope(x, z, prevItem.getPosX(), prevItem.getPosZ(),item.getItem().isOf(ModItems.FORK) ?
+                            PlateBlockEntity.FORK_ON_FOOD_DISTANCE : 2 * PlateBlockEntity.SELECTION_TOLERANCE))
+                    {
                         item.ensureStackOn(prevItem);
                     }
                 }
                 matrices.push();
-                matrices.translate(x, BASE_HEIGHT + LAYER_HEIGHT * item.getRenderLayer(), z);
-                matrices.scale(ITEM_SIZE, THICKNESS, ITEM_SIZE);
-            /*
-            对物品而言，厚度是y轴，很奇怪
-                ↑ y（厚度）
-                |
-                ·——→ x
-               / 物品平面(xOz)
-              z
-            */
-                matrices.multiply(RotationAxis.POSITIVE_Y.rotation((float) item.getRotation()));
-                //先绕Y轴旋转，这时元素自身的X轴也跟着旋转了，再绕自身X轴旋转就可以躺在盘子上了
-                matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(90));
+                if (itemStack.isOf(ModItems.FORK)) {
+                    matrices.translate(x, BASE_HEIGHT + LAYER_HEIGHT * item.getRenderLayer() + ITEM_SIZE * 0.4, z);
+                    matrices.scale(ITEM_SIZE, ITEM_SIZE, ITEM_SIZE);
+                    matrices.multiply(RotationAxis.NEGATIVE_Y.rotation((float) item.getRotation()));
+                    matrices.multiply(RotationAxis.NEGATIVE_Z.rotationDegrees(135));
+                } else {
+                    matrices.translate(x, BASE_HEIGHT + LAYER_HEIGHT * item.getRenderLayer(), z);
+                    matrices.scale(ITEM_SIZE, THICKNESS, ITEM_SIZE);
+                    //先绕Y轴旋转，这时元素自身的X轴也跟着旋转了，再绕自身X轴旋转就可以躺在盘子上了
+                    matrices.multiply(RotationAxis.POSITIVE_Y.rotation((float) item.getRotation()));
+                    matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(90));
+                }
                 World world = blockEntity.getWorld();
                 int lightAbove = WorldRenderer.getLightmapCoordinates(world, blockEntity.getPos().up());
-                MinecraftClient.getInstance().getItemRenderer().renderItem(item.getItem(), ModelTransformationMode.FIXED, lightAbove,
+                MinecraftClient.getInstance().getItemRenderer().renderItem(itemStack, ModelTransformationMode.FIXED, lightAbove,
                         OverlayTexture.DEFAULT_UV, matrices, vertexConsumers, world, 0);
                 matrices.pop();
             }

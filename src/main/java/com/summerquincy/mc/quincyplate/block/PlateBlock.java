@@ -95,7 +95,7 @@ public abstract class PlateBlock extends BlockWithEntity {
                 double rotX = user.getRotationVector().x;
                 double rotZ = user.getRotationVector().z;
                 if (item.isEmpty()) {//空手，把物品取出来
-                    if (plate.retriveItem(user, x, z)) { //尝试取回食物
+                    if (plate.retrieveItem(user, x, z)) { //尝试取回食物
                         return ActionResult.SUCCESS;
                     }
                 } else {//手里拿着物品，放进去

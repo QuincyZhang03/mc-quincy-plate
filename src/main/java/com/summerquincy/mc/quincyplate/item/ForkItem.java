@@ -20,6 +20,10 @@ public class ForkItem extends Item {
         super(settings);
     }
 
+    public ForkItem() {
+        this(new Item.Settings().maxCount(1));
+    }
+
     @Override
     public Multimap<EntityAttribute, EntityAttributeModifier> getAttributeModifiers(EquipmentSlot slot) {
         if (slot == EquipmentSlot.MAINHAND) {
