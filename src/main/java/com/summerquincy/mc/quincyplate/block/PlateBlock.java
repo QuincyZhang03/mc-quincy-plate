@@ -162,7 +162,7 @@ public abstract class PlateBlock extends BaseEntityBlock {
                 Vec3 hit = hitResult.getLocation();
                 double x = hit.x - pos.getX();
                 double z = hit.z - pos.getZ(); //[0,1]
-                if (plate.retriveItem(user, x, z)) { //尝试取回食物
+                if (plate.retrieveItem(user, x, z)) { //尝试取回食物
                     return InteractionResult.SUCCESS;
                 }
                 return InteractionResult.PASS;

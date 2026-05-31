@@ -16,14 +16,12 @@ import org.apache.logging.log4j.Logger;
 //Mod入口类要用@Mod注解进行标注，参数填mods.toml里的modid。这个类的构造方法里写初始化行为。
 @Mod(QuincyPlateMod.MODID)
 @SuppressWarnings("unused")
-public class QuincyPlateMod
-{
+public class QuincyPlateMod {
     public static final String MODID = "quincyplate";
-    public static final Logger LOGGER= LogManager.getLogger();
-    public static final GameRules.Key<GameRules.IntegerValue> RULE_MAX_PLATE_SIZE=GameRules.register("quincyPlateMaxSize", GameRules.Category.MISC, GameRules.IntegerValue.create(-1));
+    public static final Logger LOGGER = LogManager.getLogger();
+    public static final GameRules.Key<GameRules.IntegerValue> RULE_MAX_PLATE_SIZE = GameRules.register("quincyPlateMaxSize", GameRules.Category.MISC, GameRules.IntegerValue.create(-1));
 
-    public QuincyPlateMod(IEventBus modEventBus, ModContainer container)
-    {
+    public QuincyPlateMod(IEventBus modEventBus, ModContainer container) {
         modEventBus.addListener(this::commonSetup);
 
         //具体的注册逻辑写在各类里
@@ -33,8 +31,7 @@ public class QuincyPlateMod
         ModCreativeTabs.register(modEventBus);
     }
 
-    private void commonSetup(final FMLCommonSetupEvent event)
-    {
+    private void commonSetup(final FMLCommonSetupEvent event) {
         LOGGER.info("Quincy's Plate loaded successfully!");
     }
 }
