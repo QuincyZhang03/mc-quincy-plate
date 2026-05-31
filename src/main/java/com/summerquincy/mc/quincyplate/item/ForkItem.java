@@ -41,7 +41,8 @@ public class ForkItem extends Item {
     @Override
     public void appendHoverText(ItemStack pStack, TooltipContext context, List<Component> pTooltipComponents, TooltipFlag tooltipFlag) {
         super.appendHoverText(pStack, context, pTooltipComponents, tooltipFlag);
-        pTooltipComponents.add(Component.translatable("tooltip.quincyplate.fork_common"));
+        pTooltipComponents.add(Component.translatable("tooltip.quincyplate.fork_common_1"));
+        pTooltipComponents.add(Component.translatable("tooltip.quincyplate.fork_common_2"));
     }
 
     //Shift+右键时，不触发方块的use方法，而是对着方块使用物品的useOn方法
