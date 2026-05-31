@@ -44,7 +44,8 @@ public class ForkItem extends Item {
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         super.appendTooltip(stack, world, tooltip, context);
-        tooltip.add(Text.translatable("tooltip.quincyplate.fork_common"));
+        tooltip.add(Text.translatable("tooltip.quincyplate.fork_common_1"));
+        tooltip.add(Text.translatable("tooltip.quincyplate.fork_common_2"));
     }
 
 
