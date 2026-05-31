@@ -112,7 +112,7 @@ public class PlateBlockEntity extends BlockEntity {
     }
 
     public boolean eatItem(PlayerEntity user, World world, double x, double z) {
-        PlateContentItem selectedItem = selectItem(x, z, SELECTION_TOLERANCE);
+        PlateContentItem selectedItem = selectItem(x, z, SELECTION_TOLERANCE, true);
         if (selectedItem == null || !selectedItem.getItem().isFood()) return false;
         if (!user.canConsume(FabricLoader.getInstance().isModLoaded("salwayseat")
                 || FabricLoader.getInstance().isModLoaded("always_eat"))) return false;
@@ -139,6 +139,7 @@ public class PlateBlockEntity extends BlockEntity {
             world.updateListeners(pos, state, state, 0);
         }
     }
+
     public boolean stickFork(PlayerEntity user, ItemStack fork, double x, double z, double rotation) {
         PlateContentItem underneathItem = selectItem(x, z, FORK_ON_FOOD_DISTANCE);
         if (underneathItem == null) return false;
@@ -147,7 +148,7 @@ public class PlateBlockEntity extends BlockEntity {
     }
 
 
-    public PlateContentItem selectItem(double x, double z, double max_distance,boolean foodOnly) {
+    public PlateContentItem selectItem(double x, double z, double max_distance, boolean foodOnly) {
         //返回(x,z)为中心max_distance半径范围内y值最大的一项（索引最大的一项），未找到返回null
         List<PlateContentItem> foodList = content.getFoodList();
         for (int i = foodList.size() - 1; i >= 0; i--) {
@@ -189,7 +190,6 @@ public class PlateBlockEntity extends BlockEntity {
         }
         ItemScatterer.spawn(world, getPos(), container);
     }
-
 
 
     @Override
