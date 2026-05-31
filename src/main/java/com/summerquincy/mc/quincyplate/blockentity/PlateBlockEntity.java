@@ -108,7 +108,6 @@ public class PlateBlockEntity extends BlockEntity {
         user.getWorld().playSound(null, user.getX(), user.getY(), user.getZ(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS,
                 0.4f, 1.0f + user.getRandom().nextBetweenExclusive(-2, 2) * 0.1f);
         removeItem(retrievedItem);
-        sync();
         return true;
     }
 

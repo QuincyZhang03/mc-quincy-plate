@@ -2,14 +2,23 @@ package com.summerquincy.mc.quincyplate.item;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
+import com.summerquincy.mc.quincyplate.blockentity.PlateBlockEntity;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemUsageContext;
 import net.minecraft.text.Text;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
@@ -37,4 +46,34 @@ public class ForkItem extends Item {
         super.appendTooltip(stack, world, tooltip, context);
         tooltip.add(Text.translatable("tooltip.quincyplate.fork_common"));
     }
+
+
+    @Override
+    public ActionResult useOnBlock(ItemUsageContext context) {
+        World level = context.getWorld();
+        if (!level.isClient) {
+            BlockPos platePos = context.getBlockPos();
+            Vec3d hit = context.getHitPos();
+            BlockEntity blockEntity = level.getBlockEntity(platePos);
+            if (blockEntity instanceof PlateBlockEntity plate &&
+                    context.getHand() == Hand.MAIN_HAND &&
+                    context.getSide() == Direction.UP
+            ) {
+                ItemStack forkStack = context.getStack();
+                PlayerEntity player = context.getPlayer();
+                if (player == null) return ActionResult.FAIL;
+                double x = hit.x - plate.getPos().getX();
+                double z = hit.z - plate.getPos().getZ();
+                if (plate.stickFork(player, forkStack.copyWithCount(1), x, z, Math.toRadians(player.getYaw()))) {
+                    if (!player.getAbilities().creativeMode) {
+                        forkStack.decrement(1);
+                    }
+                    return ActionResult.SUCCESS;
+                }
+                return ActionResult.PASS;
+            }
+        }
+        return super.useOnBlock(context);
+    }
+
 }
