@@ -21,7 +21,7 @@ import org.apache.logging.log4j.Logger;
 public class QuincyPlateMod {
     public static final String MODID = "quincyplate";
     public static final Logger LOGGER = LogManager.getLogger();
-            public static final GameRules.Key<GameRules.IntegerValue> RULE_MAX_PLATE_SIZE=GameRules.register("quincyPlateMaxSize", GameRules.Category.MISC, GameRules.IntegerValue.create(-1));
+    public static final GameRules.Key<GameRules.IntegerValue> RULE_MAX_PLATE_SIZE = GameRules.register("quincyPlateMaxSize", GameRules.Category.MISC, GameRules.IntegerValue.create(-1));
 
     public QuincyPlateMod(FMLJavaModLoadingContext context) {
         IEventBus modEventBus = context.getModEventBus();

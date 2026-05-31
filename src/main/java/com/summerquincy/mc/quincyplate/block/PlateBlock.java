@@ -100,7 +100,7 @@ public abstract class PlateBlock extends BaseEntityBlock {
                 double rotX = user.getLookAngle().x;
                 double rotZ = user.getLookAngle().z;
                 if (item.isEmpty()) {//空手，把物品取出来
-                    if (plate.retriveItem(user, x, z)) { //尝试取回食物
+                    if (plate.retrieveItem(user, x, z)) { //尝试取回食物
                         return InteractionResult.SUCCESS;
                     }
                 } else {//手里拿着物品，放进去

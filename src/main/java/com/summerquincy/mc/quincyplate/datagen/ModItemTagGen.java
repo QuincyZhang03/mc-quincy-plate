@@ -55,8 +55,7 @@ public class ModItemTagGen extends ItemTagsProvider {
                 ModBlocks.SQUARE_PINK_PLATE.get().asItem(),
                 ModBlocks.SQUARE_PURPLE_PLATE.get().asItem(),
                 ModBlocks.SQUARE_RED_PLATE.get().asItem(),
-                ModBlocks.SQUARE_YELLOW_PLATE.get().asItem(),
-                ModBlocks.SQUARE_OAK_PLATE.get().asItem()
+                ModBlocks.SQUARE_YELLOW_PLATE.get().asItem()
         );
         tag(ModItemTags.TAG_OCTAGON_PLATES).add(
                 ModBlocks.OCTAGON_WHITE_PLATE.get().asItem(),
@@ -74,8 +73,7 @@ public class ModItemTagGen extends ItemTagsProvider {
                 ModBlocks.OCTAGON_PINK_PLATE.get().asItem(),
                 ModBlocks.OCTAGON_PURPLE_PLATE.get().asItem(),
                 ModBlocks.OCTAGON_RED_PLATE.get().asItem(),
-                ModBlocks.OCTAGON_YELLOW_PLATE.get().asItem(),
-                ModBlocks.OCTAGON_CHERRY_PLATE.get().asItem()
+                ModBlocks.OCTAGON_YELLOW_PLATE.get().asItem()
         );
     }
 }
