@@ -9,7 +9,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 
 public class ModItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(QuincyPlateMod.MODID);
-    public static final DeferredItem<Item> FORK = ITEMS.register("fork", () -> new ForkItem(new Item.Properties().stacksTo(1)));
+    public static final DeferredItem<Item> FORK = ITEMS.register("fork", () -> new ForkItem());
 
     public static void register(IEventBus bus) {
         ITEMS.register(bus);
