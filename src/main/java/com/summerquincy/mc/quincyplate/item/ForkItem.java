@@ -23,8 +23,14 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.UUID;
 
 public class ForkItem extends Item {
+
+    public static final String FORK_DAMAGE_ATTRIBUTE = "Fork Damage";
+    private static final UUID forkDamageAttributeUUID = UUID.nameUUIDFromBytes(FORK_DAMAGE_ATTRIBUTE.getBytes());
+    public static final AttributeModifier forkDamageAttribute = new AttributeModifier(forkDamageAttributeUUID, FORK_DAMAGE_ATTRIBUTE, 2.0, AttributeModifier.Operation.ADDITION);
+
     public ForkItem(Properties pProperties) {
         super(pProperties);
     }
@@ -37,7 +43,7 @@ public class ForkItem extends Item {
     @Override
     public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlot pSlot) {
         if (pSlot == EquipmentSlot.MAINHAND) {
-            return ImmutableMultimap.of(Attributes.ATTACK_DAMAGE, new AttributeModifier("Fork Damage", 2.0, AttributeModifier.Operation.ADDITION));
+            return ImmutableMultimap.of(Attributes.ATTACK_DAMAGE, forkDamageAttribute);
         }
         return ImmutableMultimap.of();
     }
@@ -69,7 +75,7 @@ public class ForkItem extends Item {
                 double z = hit.z - plate.getBlockPos().getZ();
                 double rotation = Math.toRadians(pContext.getRotation());
                 if (plate.stickFork(player, forkStack.copyWithCount(1), x, z, rotation)) {
-                    if (player!=null && !player.getAbilities().instabuild) {
+                    if (player != null && !player.getAbilities().instabuild) {
                         forkStack.shrink(1);
                     }
                     return InteractionResult.SUCCESS;
