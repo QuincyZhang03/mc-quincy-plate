@@ -23,8 +23,14 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.UUID;
 
 public class ForkItem extends Item {
+    public static final String FORK_DAMAGE_ATTRIBUTE = "Fork Damage";
+    private static final UUID forkDamageAttributeUUID = UUID.nameUUIDFromBytes(FORK_DAMAGE_ATTRIBUTE.getBytes());
+    public static final EntityAttributeModifier forkDamageAttribute = new EntityAttributeModifier(forkDamageAttributeUUID, FORK_DAMAGE_ATTRIBUTE, 2.0, EntityAttributeModifier.Operation.ADDITION);
+
+
     public ForkItem(Settings settings) {
         super(settings);
     }
@@ -36,7 +42,7 @@ public class ForkItem extends Item {
     @Override
     public Multimap<EntityAttribute, EntityAttributeModifier> getAttributeModifiers(EquipmentSlot slot) {
         if (slot == EquipmentSlot.MAINHAND) {
-            return ImmutableMultimap.of(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier("Fork Damage", 2.0, EntityAttributeModifier.Operation.ADDITION));
+            return ImmutableMultimap.of(EntityAttributes.GENERIC_ATTACK_DAMAGE, forkDamageAttribute);
         }
         return ImmutableMultimap.of();
     }
