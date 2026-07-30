@@ -27,4 +27,4 @@ forge*changelog.txt
 run-data
 
 src/generated
-/.github/
+.github
