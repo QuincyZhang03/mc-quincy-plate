@@ -1,0 +1,43 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_light_blue_dye": {
+      "conditions": {
+        "items": [
+          {
+            "items": "minecraft:light_blue_dye"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_square_plates": {
+      "conditions": {
+        "items": [
+          {
+            "items": "#quincyplate:square_plates"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "quincyplate:square_light_blue_plate_dyeing_recipe"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_square_plates",
+      "has_light_blue_dye"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "quincyplate:square_light_blue_plate_dyeing_recipe"
+    ]
+  }
+}

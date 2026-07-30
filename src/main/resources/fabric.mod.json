@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "id": "quincyplate",
+  "version": "${version}",
+  "name": "Quincy's Plate",
+  "description": "Fancy plates created by SummerQuincy.\nBest gratitude to advice of Zeno2333, and some wonderful models and textures by CharacterXK.",
+  "authors": [
+    "SummerQuincy"
+  ],
+  "contact": {
+    "sources": "https://github.com/QuincyZhang03/mc-quincy-plate"
+  },
+  "license": "MIT License",
+  "icon": "icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.summerquincy.mc.quincyplate.QuincyPlateMod"
+    ],
+    "client": [
+      "com.summerquincy.mc.quincyplate.PlateModClient"
+    ],
+    "jade": [
+      "com.summerquincy.mc.quincyplate.client.PlateJade"
+    ]
+  },
+  "mixins": [],
+  "depends": {
+    "fabricloader": ">=0.17.3",
+    "minecraft": "~1.21.1",
+    "java": ">=21",
+    "fabric-api": "*"
+  }
+}

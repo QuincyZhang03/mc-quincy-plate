@@ -1,0 +1,43 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_lime_dye": {
+      "conditions": {
+        "items": [
+          {
+            "items": "minecraft:lime_dye"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_square_plates": {
+      "conditions": {
+        "items": [
+          {
+            "items": "#quincyplate:square_plates"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "quincyplate:square_lime_plate_dyeing_recipe"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_square_plates",
+      "has_lime_dye"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "quincyplate:square_lime_plate_dyeing_recipe"
+    ]
+  }
+}
